@@ -30,11 +30,13 @@ class IndexController extends AbstractController
         $nickname = $this->params('user', null);
         if ($user = $this->userTable->fetchOne(['nickname' => $nickname])) {
             $lifeStats = $this->lifetimeTable->fetchOne(['userId' => $user->id]);
+            $stats = $this->statsTable->fetchAll(['userId' => $user->id]);
 
             $url = 'https://api.fortnitetracker.com/v1/profile/pc/' . $nickname;
 
             return new ViewModel([
-                'lifeStats'   => $lifeStats,
+                'lifeStats' => $lifeStats,
+                'stats'     => $stats,
             ]);
         }
     }
