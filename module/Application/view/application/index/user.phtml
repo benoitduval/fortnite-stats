@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-md-4">
+        <div class="card strpied-tabled-with-hover">
+            <div class="card-header ">
+                <h4 class="card-title">Solo Statistics</h4>
+                <p class="card-category"><i class="fa fa-history"></i> Updated 3 minutes ago</p>
+            </div>
+            <div class="card-body table-full-width table-responsive">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td>Wins</td>
+                            <td class="text-right"><i><?= $lifeStats->top1 ?></i></td>
+                        </tr>
+                        <tr>
+                            <td>Kills</td>
+                            <td class="text-right"><i><?= $lifeStats->kills ?></i></td>
+                        </tr>
+                        <tr>
+                            <td>Top 10</td>
+                            <td class="text-right"><i><?= $lifeStats->top10 ?></i></td>
+                        </tr>
+                        <tr>
+                            <td>Top 25</td>
+                            <td class="text-right"><i><?= $lifeStats->top25 ?></i></td>
+                        </tr>
+                        <tr>
+                            <td>Matches</td>
+                            <td class="text-right"><i><?= $lifeStats->matches ?></i></td>
+                        </tr>
+                        <tr>
+                            <td>Score</td>
+                            <td class="text-right"><i><?= $lifeStats->score ?></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
