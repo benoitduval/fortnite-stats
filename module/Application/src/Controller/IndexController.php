@@ -27,17 +27,52 @@ class IndexController extends AbstractController
 
     public function userAction()
     {
+        $soloKills  = [];
+        $soloScore  = [];
+        $soloDate   = [];
+        $duoKills   = [];
+        $duoScore   = [];
+        $duoDate    = [];
+        $squadKills = [];
+        $squadScore = [];
+        $squadDate  = [];
+
         $nickname = $this->params('user', null);
         if ($user = $this->userTable->fetchOne(['nickname' => $nickname])) {
-            $lifeStats = $this->lifetimeTable->fetchOne(['userId' => $user->id]);
-            $stats = $this->statsTable->fetchAll(['userId' => $user->id]);
+            $lifeStats  = $this->lifetimeTable->fetchOne(['userId' => $user->id]);
+            $soloStats  = $this->soloTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
+            foreach ($soloStats as $stats) {
+                $soloKills[] = (int) $stats->kills;
+                $soloScore[] = (int) $stats->score;
+                $soloDate[]  = $stats->updatedAt;
+            }
 
-            $url = 'https://api.fortnitetracker.com/v1/profile/pc/' . $nickname;
+            $duoStats   = $this->duoTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
+            foreach ($duoStats as $stats) {
+                $duoKills[] = (int) $stats->kills;
+                $duoScore[] = (int) $stats->score;
+                $duoDate[]  = $stats->updatedAt;
+            }
+
+            $squadStats = $this->squadTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
+            foreach ($duoStats as $stats) {
+                $squadKills[] = (int) $stats->kills;
+                $squadScore[] = (int) $stats->score;
+                $squadDate[]  = $stats->updatedAt;
+            }
 
             return new ViewModel([
-                'lifeStats' => $lifeStats,
-                'stats'     => $stats,
-                'nickname'  => $nickname,
+                'lifeStats'  => $lifeStats,
+                'soloScore'  => json_encode($soloScore),
+                'soloKills'  => json_encode($soloKills),
+                'soloDate'   => htmlspecialchars(json_encode($soloDate), ENT_QUOTES, 'UTF-8'),
+                'duoScore'   => json_encode($duoScore),
+                'duoKills'   => json_encode($duoKills),
+                'duoDates'   => htmlspecialchars(json_encode($duoDate), ENT_QUOTES, 'UTF-8'),
+                'squadScore' => json_encode($squadScore),
+                'squadKills' => json_encode($squadKills),
+                'squadDate'  => htmlspecialchars(json_encode($squadDate), ENT_QUOTES, 'UTF-8'),
+                'nickname'   => $nickname,
             ]);
         }
     }

@@ -15,7 +15,9 @@ class ControllerFactory implements AbstractFactoryInterface
         $tables = [
             'user'     => $container->get(TableGateway\User::class),
             'lifetime' => $container->get(TableGateway\Lifetime::class),
-            'stats'    => $container->get(TableGateway\Stats::class),
+            'solo'     => $container->get(TableGateway\Solo::class),
+            'duo'      => $container->get(TableGateway\Duo::class),
+            'squad'    => $container->get(TableGateway\Squad::class),
         ];
 
         return new $requestedName($container, $tables);
