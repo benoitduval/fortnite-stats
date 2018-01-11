@@ -1,4 +1,7 @@
 <div class="row">
+    <h1><?= $nickname ?></h1>
+</div>
+<div class="row">
     <div class="col-md-4">
         <div class="card strpied-tabled-with-hover">
             <div class="card-header ">
@@ -40,33 +43,10 @@
     <div class="col-md-8">
         <div class="card strpied-tabled-with-hover">
             <div class="card-header ">
-                <h4 class="card-title">Solo Statistics</h4>
-                <p class="card-category"><i class="fa fa-history"></i> Updated 3 minutes ago</p>
+                <h4 class="card-title">Kills</h4>
             </div>
-            <div class="card-body table-full-width table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <td>Matches</td>
-                            <td>Kills</td>
-                            <td>Wins</td>
-                            <td>Top 10</td>
-                            <td>Top 25</td>
-                            <td>Score</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        <?php foreach ($stats as $stat): ?>
-                            <td><?= $stat->matches ?></td>
-                            <td><?= $stat->kills ?></td>
-                            <td><?= $stat->top1 ?></td>
-                            <td><?= $stat->top10 ?></td>
-                            <td><?= $stat->top25 ?></td>
-                            <td><?= $stat->score ?></td>
-                        <?php endforeach ?>
-                    </tbody>
-                </table>
+            <div class="card-body">
+                <div class="kills-chart" data-kills="[0,6,3,19,2,12,3,0,9,1,19,7,6,2,3]"></div>
             </div>
         </div>
     </div>

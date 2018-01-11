@@ -22,14 +22,15 @@ class ConsoleController extends AbstractController
     public function crawlAction()
     {
         $users = $this->userTable->fetchAll();
+        $config = $this->get('config');
         foreach ($users as $user) {
-            $url = 'https://api.fortnitetracker.com/v1/profile/pc/' . $user->nickname;
+            $url = $config['api']['fortnite']['url'] . $user->nickname;
 
             $request = new Request();
             $request->setMethod(Request::METHOD_GET);
             $request->setUri($url);
             $request->getHeaders()->addHeaders([
-                'TRN-Api-Key' => '4214e715-1dbd-4bd3-b4f7-c33149561288',
+                'TRN-Api-Key' => $config['api']['fortnite']['key'],
             ]);
 
             $client = new Client();

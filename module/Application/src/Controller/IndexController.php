@@ -37,6 +37,7 @@ class IndexController extends AbstractController
             return new ViewModel([
                 'lifeStats' => $lifeStats,
                 'stats'     => $stats,
+                'nickname'  => $nickname,
             ]);
         }
     }
