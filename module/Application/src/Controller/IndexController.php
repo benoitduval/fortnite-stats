@@ -56,7 +56,7 @@ class IndexController extends AbstractController
             }
 
             $squadStats = $this->squadTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
-            foreach ($duoStats as $stats) {
+            foreach ($squadStats as $stats) {
                 $squadKills[] = (int) $stats->kills;
                 $squadScore[] = (int) $stats->score;
                 $squadDate[]  = $stats->updatedAt;
