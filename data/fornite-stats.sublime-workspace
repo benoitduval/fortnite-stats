@@ -532,7 +532,7 @@
 			"file": "/Library/WebServer/Documents/fortnite-stats/module/Application/src/Controller/IndexController.php",
 			"settings":
 			{
-				"buffer_size": 5459,
+				"buffer_size": 5432,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -1242,15 +1242,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5459,
+						"buffer_size": 5432,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4023,
-								4023
+								2054,
+								2054
 							]
 						],
 						"settings":
@@ -1263,24 +1263,24 @@
 								{
 									"1":
 									[
-										3089,
-										3090
+										3716,
+										3717
 									]
 								},
 								"icon":
 								{
 									"1":
 									[
-										"Packages/BracketHighlighter/icons/curly_bracket.png",
-										"region.purplish"
+										"Packages/BracketHighlighter/icons/single_quote.png",
+										"region.greenish"
 									]
 								},
 								"open":
 								{
 									"1":
 									[
-										3066,
-										3067
+										3710,
+										3711
 									]
 								},
 								"unmatched":
@@ -1351,24 +1351,24 @@
 								{
 									"1":
 									[
-										4026,
-										4027
+										2363,
+										2364
 									]
 								},
 								"icon":
 								{
 									"1":
 									[
-										"Packages/BracketHighlighter/icons/single_quote.png",
-										"region.greenish"
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"region.purplish"
 									]
 								},
 								"open":
 								{
 									"1":
 									[
-										4021,
-										4022
+										1232,
+										1233
 									]
 								},
 								"unmatched":
@@ -1439,7 +1439,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 856.0,
+						"translation.y": 345.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -5636,7 +5636,7 @@
 		[
 			[
 				"",
-				"/Volumes/diskE/Users/b5l/Sites/Sources/volley.sublime-project"
+				"/Volumes/diskE/Users/b5l/Sites/Sources/startpage.sublime-project"
 			],
 			[
 				"v",

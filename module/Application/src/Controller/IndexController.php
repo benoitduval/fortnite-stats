@@ -42,24 +42,52 @@ class IndexController extends AbstractController
         $nickname = $this->params()->fromQuery('user', null);
         if ($user = $this->userTable->fetchOne(['nickname' => $nickname])) {
             $lifeStats  = $this->lifetimeTable->fetchOne(['userId' => $user->id]);
+
             $soloStats  = $this->soloTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
             foreach ($soloStats as $stats) {
+                if ($stats->top1) {
+                    $soloScore[] = [
+                        'y' => (int) $stats->score,
+                        'marker' => [
+                            'symbol' => 'url(/img/trophy.png)'
+                        ]
+                    ];
+                } else {
+                    $soloScore[] = (int) $stats->score;
+                }
                 $soloKills[] = (int) $stats->kills;
-                $soloScore[] = (int) $stats->score;
                 $soloDate[]  = $stats->updatedAt;
             }
 
             $duoStats   = $this->duoTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
             foreach ($duoStats as $stats) {
+                if ($stats->top1) {
+                    $duoScore[] = [
+                        'y' => (int) $stats->score,
+                        'marker' => [
+                            'symbol' => 'url(/img/trophy.png)'
+                        ]
+                    ];
+                } else {
+                    $duoScore[] = (int) $stats->score;
+                }
                 $duoKills[] = (int) $stats->kills;
-                $duoScore[] = (int) $stats->score;
                 $duoDate[]  = $stats->updatedAt;
             }
 
             $squadStats = $this->squadTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
             foreach ($squadStats as $stats) {
+                if ($stats->top1) {
+                    $squadScore[] = [
+                        'y' => (int) $stats->score,
+                        'marker' => [
+                            'symbol' => 'url(/img/trophy.png)'
+                        ]
+                    ];
+                } else {
+                    $squadScore[] = (int) $stats->score;
+                }
                 $squadKills[] = (int) $stats->kills;
-                $squadScore[] = (int) $stats->score;
                 $squadDate[]  = $stats->updatedAt;
             }
 
