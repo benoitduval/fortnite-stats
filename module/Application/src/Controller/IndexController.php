@@ -36,6 +36,7 @@ class IndexController extends AbstractController
         $squadKills = [];
         $squadScore = [];
         $squadDate  = [];
+        $lifeStats  = [];
         $config  = $this->get('config');
 
         $nickname = $this->params()->fromQuery('user', null);
@@ -63,13 +64,8 @@ class IndexController extends AbstractController
             }
 
         } else {
-            $user = $this->userTable->save([
-                'nickname' => $nickname,
-                'createdAt' => date('Y-m-d H:i:s', time()),
-                'updatedAt' => date('Y-m-d H:i:s', time()),
-            ]);
 
-            $url = $config['api']['fortnite']['url'] . $user->nickname;
+            $url = $config['api']['fortnite']['url'] . $nickname;
             $request = new Request();
             $request->setMethod(Request::METHOD_GET);
             $request->setUri($url);
@@ -82,33 +78,43 @@ class IndexController extends AbstractController
             $response = $client->send($request);
             $data = json_decode($response->getBody(), true);
 
-            $solo  = $data['stats']['p2'];
-            $duo   = $data['stats']['p10'];
-            $squad = $data['stats']['p9'];
-            $data = [
-                'userId'       => $user->id,
-                'soloKills'    => $solo['kills']['value'],
-                'soloMatches'  => $solo['matches']['value'],
-                'soloScore'    => $solo['score']['value'],
-                'soloTop1'     => $solo['top1']['value'],
-                'top10'        => $solo['top10']['value'],
-                'top25'        => $solo['top25']['value'],
-                'duoMatches'   => $duo['matches']['value'],
-                'duoScore'     => $duo['score']['value'],
-                'duoKills'     => $duo['kills']['value'],
-                'duoTop1'      => $duo['top1']['value'],
-                'top5'         => $duo['top5']['value'],
-                'top12'        => $duo['top12']['value'],
-                'squadMatches' => $squad['matches']['value'],
-                'squadKills'   => $squad['kills']['value'],
-                'squadScore'   => $squad['score']['value'],
-                'squadTop1'    => $squad['top1']['value'],
-                'top3'         => $squad['top3']['value'],
-                'top6'         => $squad['top6']['value'],
-                'updatedAt'    => date('Y-m-d H:i:s', time()),
-            ];
-            $lifeStats = $this->lifetimeTable->save($data);
+            if (isset($data['stats'])) {
+                $user = $this->userTable->save([
+                    'nickname' => $nickname,
+                    'createdAt' => date('Y-m-d H:i:s', time()),
+                    'updatedAt' => date('Y-m-d H:i:s', time()),
+                ]);
+
+                $solo  = $data['stats']['p2'];
+                $duo   = $data['stats']['p10'];
+                $squad = $data['stats']['p9'];
+                $data = [
+                    'userId'       => $user->id,
+                    'soloKills'    => $solo['kills']['value'],
+                    'soloMatches'  => $solo['matches']['value'],
+                    'soloScore'    => $solo['score']['value'],
+                    'soloTop1'     => $solo['top1']['value'],
+                    'top10'        => $solo['top10']['value'],
+                    'top25'        => $solo['top25']['value'],
+                    'duoMatches'   => $duo['matches']['value'],
+                    'duoScore'     => $duo['score']['value'],
+                    'duoKills'     => $duo['kills']['value'],
+                    'duoTop1'      => $duo['top1']['value'],
+                    'top5'         => $duo['top5']['value'],
+                    'top12'        => $duo['top12']['value'],
+                    'squadMatches' => $squad['matches']['value'],
+                    'squadKills'   => $squad['kills']['value'],
+                    'squadScore'   => $squad['score']['value'],
+                    'squadTop1'    => $squad['top1']['value'],
+                    'top3'         => $squad['top3']['value'],
+                    'top6'         => $squad['top6']['value'],
+                    'updatedAt'    => date('Y-m-d H:i:s', time()),
+                ];
+                $lifeStats = $this->lifetimeTable->save($data);
+            }
         }
+
+        if (!$user) $this->redirect()->toUrl('/');
 
         return new ViewModel([
             'lifeStats'  => $lifeStats,
