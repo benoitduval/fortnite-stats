@@ -61,13 +61,13 @@ return [
                     ],
                 ],
             ],
-            'user' => [
+            'stats' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/user/:user',
+                    'route'    => '/stats',
                     'defaults' => [
                         'controller'    => Controller\IndexController::class,
-                        'action'        => 'user',
+                        'action'        => 'stats',
                     ],
                 ],
             ],
