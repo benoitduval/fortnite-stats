@@ -135,16 +135,16 @@ class ConsoleController extends AbstractController
                     $console->writeLine('Updating Ranks.', Color::LIGHT_BLUE);
                     $rank = [
                         'userId'         => $user->id,
-                        'rankSoloScore'  => $lifeStats->rankSoloScore,
-                        'rankSoloKills'  => $lifeStats->rankSoloKills,
-                        'rankSoloTop1'   => $lifeStats->rankSoloTop1,
-                        'rankDuoScore'   => $lifeStats->rankDuoScore,
-                        'rankDuoKills'   => $lifeStats->rankDuoKills,
-                        'rankDuoTop1'    => $lifeStats->rankDuoTop1,
-                        'rankSquadScore' => $lifeStats->rankSquadScore,
-                        'rankSquadKills' => $lifeStats->rankSquadKills,
-                        'rankSquadTop1'  => $lifeStats->rankSquadTop1,
-                        'updatedAt' => date('Y-m-d H:i:s', time())
+                        'rankSoloScore'  => $data['rankSoloScore'],
+                        'rankSoloKills'  => $data['rankSoloKills'],
+                        'rankSoloTop1'   => $data['rankSoloTop1'],
+                        'rankDuoScore'   => $data['rankDuoScore'],
+                        'rankDuoKills'   => $data['rankDuoKills'],
+                        'rankDuoTop1'    => $data['rankDuoTop1'],
+                        'rankSquadScore' => $data['rankSquadScore'],
+                        'rankSquadKills' => $data['rankSquadKills'],
+                        'rankSquadTop1'  => $data['rankSquadTop1'],
+                        'updatedAt'      => date('Y-m-d H:i:s', time())
                     ];
 
                     $this->rankTable->save($rank);
