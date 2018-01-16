@@ -142,6 +142,8 @@ class ConsoleController extends AbstractController
                     ];
 
                     $this->rankSoloTable->save($rank);
+                    $data += ['id' => $lifeStats->id];
+                    $this->lifetimeTable->save($data);
                 }
 
                 if ($data['rankDuoScore'] != $lifeStats->rankDuoScore) {
@@ -155,6 +157,8 @@ class ConsoleController extends AbstractController
                     ];
 
                     $this->rankDuoTable->save($rank);
+                    $data += ['id' => $lifeStats->id];
+                    $this->lifetimeTable->save($data);
                 }
 
                 if ($data['rankSquadScore'] != $lifeStats->rankSquadScore) {
@@ -168,6 +172,8 @@ class ConsoleController extends AbstractController
                     ];
 
                     $this->rankSquadTable->save($rank);
+                    $data += ['id' => $lifeStats->id];
+                    $this->lifetimeTable->save($data);
                 }
             }
             $console->writeLine('Done.', Color::BLUE);
