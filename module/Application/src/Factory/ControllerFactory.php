@@ -18,7 +18,9 @@ class ControllerFactory implements AbstractFactoryInterface
             'solo'     => $container->get(TableGateway\Solo::class),
             'duo'      => $container->get(TableGateway\Duo::class),
             'squad'    => $container->get(TableGateway\Squad::class),
-            'rank'     => $container->get(TableGateway\Rank::class),
+            'rankSolo'     => $container->get(TableGateway\RankSolo::class),
+            'rankDuo'     => $container->get(TableGateway\RankDuo::class),
+            'rankSquad'     => $container->get(TableGateway\RankSquad::class),
         ];
 
         return new $requestedName($container, $tables);

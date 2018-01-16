@@ -100,17 +100,25 @@ class IndexController extends AbstractController
                 $squadDate[]  = $stats->updatedAt;
             }
 
-            $rankStats  = $this->rankTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
+            $rankStats  = $this->rankSoloTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
             foreach ($rankStats as $stats) {
-                $rankSoloKills[] = (int) $stats->rankSoloKills;
-                $rankSoloTop1[] = (int) $stats->rankSoloTop1;
-                $rankSoloScore[] = (int) $stats->rankSoloScore;
-                $rankDuoKills[] = (int) $stats->rankDuoKills;
-                $rankDuoTop1[] = (int) $stats->rankDuoTop1;
-                $rankDuoScore[] = (int) $stats->rankDuoScore;
-                $rankSquadKills[] = (int) $stats->rankSquadKills;
-                $rankSquadTop1[] = (int) $stats->rankSquadTop1;
-                $rankSquadScore[] = (int) $stats->rankSquadScore;
+                $rankSoloKills[] = (int) $stats->rankKills;
+                $rankSoloTop1[] = (int) $stats->rankTop1;
+                $rankSoloScore[] = (int) $stats->rankScore;
+            }
+
+            $rankStats  = $this->rankDuoTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
+            foreach ($rankStats as $stats) {
+                $rankDuoKills[] = (int) $stats->rankKills;
+                $rankDuoTop1[] = (int) $stats->rankTop1;
+                $rankDuoScore[] = (int) $stats->rankScore;
+            }
+
+            $rankStats  = $this->rankSquadTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
+            foreach ($rankStats as $stats) {
+                $rankSquadKills[] = (int) $stats->rankKills;
+                $rankSquadTop1[] = (int) $stats->rankTop1;
+                $rankSquadScore[] = (int) $stats->rankScore;
             }
 
         } else {

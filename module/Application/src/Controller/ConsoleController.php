@@ -131,23 +131,43 @@ class ConsoleController extends AbstractController
                     $this->lifetimeTable->save($data);
                 }
 
-                if ($data['rankSoloScore'] != $lifeStats->rankSoloScore) {
+                if ($data['rankSoloScore'] == $lifeStats->rankSoloScore) {
                     $console->writeLine('Updating Ranks.', Color::LIGHT_BLUE);
                     $rank = [
-                        'userId'         => $user->id,
-                        'rankSoloScore'  => $data['rankSoloScore'],
-                        'rankSoloKills'  => $data['rankSoloKills'],
-                        'rankSoloTop1'   => $data['rankSoloTop1'],
-                        'rankDuoScore'   => $data['rankDuoScore'],
-                        'rankDuoKills'   => $data['rankDuoKills'],
-                        'rankDuoTop1'    => $data['rankDuoTop1'],
-                        'rankSquadScore' => $data['rankSquadScore'],
-                        'rankSquadKills' => $data['rankSquadKills'],
-                        'rankSquadTop1'  => $data['rankSquadTop1'],
-                        'updatedAt'      => date('Y-m-d H:i:s', time())
+                        'userId'    => $user->id,
+                        'rankScore' => $data['rankSoloScore'],
+                        'rankKills' => $data['rankSoloKills'],
+                        'rankTop1'  => $data['rankSoloTop1'],
+                        'updatedAt' => date('Y-m-d H:i:s', time())
                     ];
 
-                    $this->rankTable->save($rank);
+                    $this->rankSoloTable->save($rank);
+                }
+
+                if ($data['rankDuoScore'] == $lifeStats->rankDuoScore) {
+                    $console->writeLine('Updating Ranks.', Color::LIGHT_BLUE);
+                    $rank = [
+                        'userId'    => $user->id,
+                        'rankScore' => $data['rankDuoScore'],
+                        'rankKills' => $data['rankDuoKills'],
+                        'rankTop1'  => $data['rankDuoTop1'],
+                        'updatedAt' => date('Y-m-d H:i:s', time())
+                    ];
+
+                    $this->rankDuoTable->save($rank);
+                }
+
+                if ($data['rankSquadScore'] == $lifeStats->rankSquadScore) {
+                    $console->writeLine('Updating Ranks.', Color::LIGHT_BLUE);
+                    $rank = [
+                        'userId'    => $user->id,
+                        'rankScore' => $data['rankSquadScore'],
+                        'rankKills' => $data['rankSquadKills'],
+                        'rankTop1'  => $data['rankSquadTop1'],
+                        'updatedAt' => date('Y-m-d H:i:s', time())
+                    ];
+
+                    $this->rankSquadTable->save($rank);
                 }
             }
             $console->writeLine('Done.', Color::BLUE);
