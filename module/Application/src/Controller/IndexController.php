@@ -64,7 +64,7 @@ class IndexController extends AbstractController
                 } else {
                     $soloScore[] = (int) $stats->score;
                 }
-                $rankSoloTop1[] = (int) $stats->rankTop1;
+                $soloRankTop1[] = (int) $stats->rankTop1;
                 $soloRankKills[] = (int) $stats->rankKills;
                 $soloRankScore[] = (int) $stats->rankScore;
                 $soloKills[] = (int) $stats->kills;
@@ -83,7 +83,7 @@ class IndexController extends AbstractController
                 } else {
                     $duoScore[] = (int) $stats->score;
                 }
-                $rankDuoTop1[] = (int) $stats->rankTop1;
+                $duoRankTop1[] = (int) $stats->rankTop1;
                 $duoRankKills[] = (int) $stats->rankKills;
                 $duoRankScore[] = (int) $stats->rankScore;
                 $duoKills[] = (int) $stats->kills;
@@ -102,7 +102,7 @@ class IndexController extends AbstractController
                 } else {
                     $squadScore[] = (int) $stats->score;
                 }
-                $rankSquadTop1[] = (int) $stats->rankTop1;
+                $squadRankTop1[] = (int) $stats->rankTop1;
                 $squadRankKills[] = (int) $stats->rankKills;
                 $squadRankScore[] = (int) $stats->rankScore;
                 $squadKills[] = (int) $stats->kills;

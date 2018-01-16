@@ -85,6 +85,15 @@ return [
                         ],
                     ],
                 ],
+                'lifetime-update' => [
+                    'options' => [
+                        'route'    => 'lifetime-update [--verbose|-v]',
+                        'defaults' => [
+                            'controller' => Controller\ConsoleController::class,
+                            'action'     => 'lifetime-update',
+                        ],
+                    ],
+                ],
             ],
         ],
     ],
