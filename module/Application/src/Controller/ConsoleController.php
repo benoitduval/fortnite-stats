@@ -131,7 +131,7 @@ class ConsoleController extends AbstractController
                     $this->lifetimeTable->save($data);
                 }
 
-                if ($data['rankSoloScore'] == $lifeStats->rankSoloScore) {
+                if ($data['rankSoloScore'] != $lifeStats->rankSoloScore) {
                     $console->writeLine('Updating Ranks.', Color::LIGHT_BLUE);
                     $rank = [
                         'userId'    => $user->id,
@@ -144,7 +144,7 @@ class ConsoleController extends AbstractController
                     $this->rankSoloTable->save($rank);
                 }
 
-                if ($data['rankDuoScore'] == $lifeStats->rankDuoScore) {
+                if ($data['rankDuoScore'] != $lifeStats->rankDuoScore) {
                     $console->writeLine('Updating Ranks.', Color::LIGHT_BLUE);
                     $rank = [
                         'userId'    => $user->id,
@@ -157,7 +157,7 @@ class ConsoleController extends AbstractController
                     $this->rankDuoTable->save($rank);
                 }
 
-                if ($data['rankSquadScore'] == $lifeStats->rankSquadScore) {
+                if ($data['rankSquadScore'] != $lifeStats->rankSquadScore) {
                     $console->writeLine('Updating Ranks.', Color::LIGHT_BLUE);
                     $rank = [
                         'userId'    => $user->id,
