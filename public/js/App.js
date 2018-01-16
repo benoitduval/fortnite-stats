@@ -59,9 +59,37 @@ App = {
                 tooltip: {
                     shared: true
                 },
+                plotOptions: {
+                    area: {
+                        lineColor: Highcharts.getOptions().colors[0],
+                        fillColor: {
+                            linearGradient: {
+                                x1: 0,
+                                y1: 0,
+                                x2: 0,
+                                y2: 1
+                            },
+                            stops: [
+                                [0, Highcharts.getOptions().colors[0]],
+                                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                            ]
+                        },
+                        marker: {
+                            radius: 2,
+                            fillColor: Highcharts.getOptions().colors[0]
+                        },
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
+                    }
+                },
                 series: [{
                     name: 'Kills',
-                    type: 'column',
+                    type: 'area',
                     yAxis: 1,
                     data: JSON.parse(dataKills),
 
