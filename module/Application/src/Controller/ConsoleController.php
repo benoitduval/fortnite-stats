@@ -84,10 +84,7 @@ class ConsoleController extends AbstractController
                         'matches'   => $solo['matches']['value'] - $lifeStats->soloMatches,
                         'kills'     => $solo['kills']['value'] - $lifeStats->soloKills,
                         'score'     => $solo['score']['value'] - $lifeStats->soloScore,
-                        'updatedAt' => date('Y-m-d H:i:s', time()),
-                        'rankScore' => $lifeStats->rankSoloScore,
-                        'rankKills' => $lifeStats->rankSoloKills,
-                        'rankTop1'  => $lifeStats->rankSoloTop1,
+                        'updatedAt' => date('Y-m-d H:i:s', time())
                     ];
 
                     $this->soloTable->save($diff);
@@ -106,10 +103,7 @@ class ConsoleController extends AbstractController
                         'matches'   => $duo['matches']['value'] - $lifeStats->duoMatches,
                         'kills'     => $duo['kills']['value'] - $lifeStats->duoKills,
                         'score'     => $duo['score']['value'] - $lifeStats->duoScore,
-                        'updatedAt' => date('Y-m-d H:i:s', time()),
-                        'rankScore' => $lifeStats->rankDuoScore,
-                        'rankKills' => $lifeStats->rankDuoKills,
-                        'rankTop1'  => $lifeStats->rankDuoTop1,
+                        'updatedAt' => date('Y-m-d H:i:s', time())
                     ];
 
                     $this->duoTable->save($diff);
@@ -128,16 +122,32 @@ class ConsoleController extends AbstractController
                         'matches'   => $squad['matches']['value'] - $lifeStats->squadMatches,
                         'kills'     => $squad['kills']['value'] - $lifeStats->squadKills,
                         'score'     => $squad['score']['value'] - $lifeStats->squadScore,
-                        'updatedAt' => date('Y-m-d H:i:s', time()),
-                        'rankScore' => $lifeStats->rankSquadScore,
-                        'rankKills' => $lifeStats->rankSquadKills,
-                        'rankTop1'  => $lifeStats->rankSquadTop1,
+                        'updatedAt' => date('Y-m-d H:i:s', time())
                     ];
 
                     $this->squadTable->save($diff);
 
                     $data += ['id' => $lifeStats->id];
                     $this->lifetimeTable->save($data);
+                }
+
+                if ($data['rankSoloScore'] != $lifeStats->rankSoloScore) {
+                    $console->writeLine('Updating Ranks.', Color::LIGHT_BLUE);
+                    $rank = [
+                        'userId'         => $user->id,
+                        'rankSoloScore'  => $lifeStats->rankSoloScore,
+                        'rankSoloKills'  => $lifeStats->rankSoloKills,
+                        'rankSoloTop1'   => $lifeStats->rankSoloTop1,
+                        'rankDuoScore'   => $lifeStats->rankDuoScore,
+                        'rankDuoKills'   => $lifeStats->rankDuoKills,
+                        'rankDuoTop1'    => $lifeStats->rankDuoTop1,
+                        'rankSquadScore' => $lifeStats->rankSquadScore,
+                        'rankSquadKills' => $lifeStats->rankSquadKills,
+                        'rankSquadTop1'  => $lifeStats->rankSquadTop1,
+                        'updatedAt' => date('Y-m-d H:i:s', time())
+                    ];
+
+                    $this->rankTable->save($rank);
                 }
             }
             $console->writeLine('Done.', Color::BLUE);

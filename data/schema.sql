@@ -46,6 +46,24 @@ CREATE TABLE `lifetime` (
   KEY `userId` (`userId`,`updatedAt`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `rank`;
+CREATE TABLE `rank` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `userId`int(10) NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `rankSoloScore` int (10) NOT NULL,
+  `rankSoloKills` int (10) NOT NULL,
+  `rankSoloTop1` int (10) NOT NULL,
+  `rankDuoScore` int (10) NOT NULL,
+  `rankDuoKills` int (10) NOT NULL,
+  `rankDuoTop1` int (10) NOT NULL,
+  `rankSquadScore` int (10) NOT NULL,
+  `rankSquadKills` int (10) NOT NULL,
+  `rankSquadTop1` int (10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `userId` (`userId`,`updatedAt`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `solo`;
 CREATE TABLE `solo` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -57,9 +75,6 @@ CREATE TABLE `solo` (
   `kills` int(20) NOT NULL,
   `score` int(20) NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `rankScore` int (10) NOT NULL,
-  `rankKills` int (10) NOT NULL,
-  `rankTop1` int (10) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`,`updatedAt`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -75,9 +90,6 @@ CREATE TABLE `duo` (
   `kills` int(20) NOT NULL,
   `score` int(20) NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `rankScore` int (10) NOT NULL,
-  `rankKills` int (10) NOT NULL,
-  `rankTop1` int (10) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`,`updatedAt`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -93,9 +105,6 @@ CREATE TABLE `squad` (
   `kills` int(20) NOT NULL,
   `score` int(20) NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `rankScore` int (10) NOT NULL,
-  `rankKills` int (10) NOT NULL,
-  `rankTop1` int (10) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`,`updatedAt`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

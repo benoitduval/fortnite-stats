@@ -27,25 +27,25 @@ class IndexController extends AbstractController
 
     public function statsAction()
     {
-        $soloKills  = [];
-        $soloRankKills  = [];
-        $soloRankScore  = [];
-        $soloRankTop1    = [];
-        $soloScore  = [];
-        $soloDate   = [];
-        $duoKills   = [];
-        $duoScore   = [];
-        $duoDate    = [];
-        $duoRankKills  = [];
-        $duoRankScore  = [];
-        $duoRankTop1    = [];
-        $squadKills      = [];
-        $squadScore      = [];
-        $squadDate       = [];
-        $squadRankKills  = [];
-        $squadRankScore  = [];
-        $squadRankTop1    = [];
-        $lifeStats  = [];
+        $soloKills      = [];
+        $soloScore      = [];
+        $soloDate       = [];
+        $duoKills       = [];
+        $duoScore       = [];
+        $duoDate        = [];
+        $squadKills     = [];
+        $squadScore     = [];
+        $squadDate      = [];
+        $lifeStats      = [];
+        $rankSoloKills  = [];
+        $rankSoloTop1   = [];
+        $rankSoloScore  = [];
+        $rankDuoKills   = [];
+        $rankDuoTop1    = [];
+        $rankDuoScore   = [];
+        $rankSquadKills = [];
+        $rankSquadTop1  = [];
+        $rankSquadScore = [];
         $config  = $this->get('config');
 
         $nickname = $this->params()->fromQuery('user', null);
@@ -64,9 +64,6 @@ class IndexController extends AbstractController
                 } else {
                     $soloScore[] = (int) $stats->score;
                 }
-                $soloRankTop1[] = (int) $stats->rankTop1;
-                $soloRankKills[] = (int) $stats->rankKills;
-                $soloRankScore[] = (int) $stats->rankScore;
                 $soloKills[] = (int) $stats->kills;
                 $soloDate[]  = $stats->updatedAt;
             }
@@ -83,9 +80,6 @@ class IndexController extends AbstractController
                 } else {
                     $duoScore[] = (int) $stats->score;
                 }
-                $duoRankTop1[] = (int) $stats->rankTop1;
-                $duoRankKills[] = (int) $stats->rankKills;
-                $duoRankScore[] = (int) $stats->rankScore;
                 $duoKills[] = (int) $stats->kills;
                 $duoDate[]  = $stats->updatedAt;
             }
@@ -102,11 +96,21 @@ class IndexController extends AbstractController
                 } else {
                     $squadScore[] = (int) $stats->score;
                 }
-                $squadRankTop1[] = (int) $stats->rankTop1;
-                $squadRankKills[] = (int) $stats->rankKills;
-                $squadRankScore[] = (int) $stats->rankScore;
                 $squadKills[] = (int) $stats->kills;
                 $squadDate[]  = $stats->updatedAt;
+            }
+
+            $rankStats  = $this->rankTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
+            foreach ($rankStats as $stats) {
+                $rankSoloKills[] = (int) $stats->rankSoloKills;
+                $rankSoloTop1[] = (int) $stats->rankSoloTop1;
+                $rankSoloScore[] = (int) $stats->rankSoloScore;
+                $rankDuoKills[] = (int) $stats->rankDuoKills;
+                $rankDuoTop1[] = (int) $stats->rankDuoTop1;
+                $rankDuoScore[] = (int) $stats->rankDuoScore;
+                $rankSquadKills[] = (int) $stats->rankSquadKills;
+                $rankSquadTop1[] = (int) $stats->rankSquadTop1;
+                $rankSquadScore[] = (int) $stats->rankSquadScore;
             }
 
         } else {
@@ -177,18 +181,18 @@ class IndexController extends AbstractController
             'soloDate'   => htmlspecialchars(json_encode($soloDate), ENT_QUOTES, 'UTF-8'),
             'duoScore'   => json_encode($duoScore),
             'duoKills'   => json_encode($duoKills),
-            'duoDates'   => htmlspecialchars(json_encode($duoDate), ENT_QUOTES, 'UTF-8'),
+            'duoDate'   => htmlspecialchars(json_encode($duoDate), ENT_QUOTES, 'UTF-8'),
             'squadScore' => json_encode($squadScore),
             'squadKills' => json_encode($squadKills),
-            'soloRankKills' => json_encode($soloRankKills),
-            'soloRankTop1' => json_encode($soloRankTop1),
-            'soloRankScore' => json_encode($soloRankScore),
-            'duoRankScore' => json_encode($duoRankScore),
-            'duoRankTop1' => json_encode($duoRankTop1),
-            'duoRankKills' => json_encode($duoRankKills),
-            'squadRankScore' => json_encode($squadRankScore),
-            'squadRankTop1' => json_encode($squadRankTop1),
-            'squadRankKills' => json_encode($squadRankKills),
+            'soloRankKills' => json_encode($rankSoloKills),
+            'soloRankTop1' => json_encode($rankSoloTop1),
+            'soloRankScore' => json_encode($rankSoloScore),
+            'duoRankKills' => json_encode($rankDuoKills),
+            'duoRankTop1' => json_encode($rankDuoTop1),
+            'duoRankScore' => json_encode($rankDuoScore),
+            'squadRankKills' => json_encode($rankSquadKills),
+            'squadRankTop1' => json_encode($rankSquadTop1),
+            'squadRankScore' => json_encode($rankSquadScore),
             'squadDate'  => htmlspecialchars(json_encode($squadDate), ENT_QUOTES, 'UTF-8'),
             'nickname'   => $nickname,
         ]);

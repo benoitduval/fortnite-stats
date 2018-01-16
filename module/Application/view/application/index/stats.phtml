@@ -4,7 +4,7 @@
 <hr>
 <div class="row">
     <div class="col-md-12">
-        <h2>Solo Statistics</h2>
+        <h2>SOLO Statistics</h2>
     </div>
     <div class="col-md-4">
         <div class="card strpied-tabled-with-hover">
@@ -49,21 +49,42 @@
     </div>
     <div class="col-md-8">
         <div class="card strpied-tabled-with-hover">
+            <div class="card-header ">
+                <p class="card-category">
+                    Rank Statistics
+                </p>
+            </div>
             <div class="card-body">
-                <div class="stats-chart" data-dates="<?= $soloDate ?>" data-kills="<?= $soloKills ?>" data-score='<?= $soloScore ?>' data-rank-score='<?= $soloRankScore ?>' data-rank-win='<?= $soloRankTop1 ?>'  data-rank-kills='<?= $soloRankKills ?>'></div>
+                <div class="rank-chart" data-rank='<?= $soloRankScore ?>' data-color="2" data-title="Score" style='height:91px;'></div>
+                <hr>
+                <div class="rank-chart" data-rank='<?= $soloRankKills ?>' data-color="3" data-title="Kills"  style='height:91px;'></div>
+                <hr>
+                <div class="rank-chart" data-rank='<?= $soloRankTop1 ?>' data-color="4" data-title="Top 1"  style='height:92px;'></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card strpied-tabled-with-hover">
+            <div class="card-header ">
+                <p class="card-category">
+                    Match Statistics
+                </p>
+            </div>
+            <div class="card-body">
+                <div class="stats-chart" data-dates="<?= $soloDate ?>" data-kills="<?= $soloKills ?>" data-score='<?= $soloScore ?>''></div>
             </div>
         </div>
     </div>
 </div>
-
+<hr>
 <div class="row">
     <div class="col-md-12">
-        <h2>Duo Statistics</h2>
+        <h2>DUO Statistics</h2>
     </div>
     <div class="col-md-4">
         <div class="card strpied-tabled-with-hover">
             <div class="card-header ">
-                <h4 class="card-title">Solo Statistics</h4>
+                <h4 class="card-title">duo Statistics</h4>
                 <p class="card-category">
                     <i class="fa fa-history"></i>
                     <?= $lifeStats->updatedAt ?>
@@ -89,12 +110,12 @@
                             <td class="text-right"><i><?= $lifeStats->duoScore ?></i> <i class="text-muted">(Rank: <?= $lifeStats->rankDuoScore ?>)</i></td>
                         </tr>
                         <tr>
-                            <td>Top 5</td>
-                            <td class="text-right"><i><?= $lifeStats->top5 ?></i></td>
+                            <td>Top 10</td>
+                            <td class="text-right"><i><?= $lifeStats->top10 ?></i></td>
                         </tr>
                         <tr>
-                            <td>Top 12</td>
-                            <td class="text-right"><i><?= $lifeStats->top12 ?></i></td>
+                            <td>Top 25</td>
+                            <td class="text-right"><i><?= $lifeStats->top25 ?></i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -103,21 +124,42 @@
     </div>
     <div class="col-md-8">
         <div class="card strpied-tabled-with-hover">
+            <div class="card-header ">
+                <p class="card-category">
+                    Rank Statistics
+                </p>
+            </div>
             <div class="card-body">
-                <div class="stats-chart" data-dates="<?= $soloDate ?>" data-kills="<?= $duoKills ?>" data-score='<?= $duoScore ?>' data-rank-score='<?= $duoRankScore ?>' data-rank-win='<?= $duoRankTop1 ?>'  data-rank-kills='<?= $duoRankKills ?>'></div>
+                <div class="rank-chart" data-rank='<?= $duoRankScore ?>' data-color="2" data-title="Score" style='height:91px;'></div>
+                <hr>
+                <div class="rank-chart" data-rank='<?= $duoRankKills ?>' data-color="3" data-title="Kills"  style='height:91px;'></div>
+                <hr>
+                <div class="rank-chart" data-rank='<?= $duoRankTop1 ?>' data-color="4" data-title="Top 1"  style='height:92px;'></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card strpied-tabled-with-hover">
+            <div class="card-header ">
+                <p class="card-category">
+                    Match Statistics
+                </p>
+            </div>
+            <div class="card-body">
+                <div class="stats-chart" data-dates="<?= $duoDate ?>" data-kills="<?= $duoKills ?>" data-score='<?= $duoScore ?>''></div>
             </div>
         </div>
     </div>
 </div>
-
+<hr>
 <div class="row">
     <div class="col-md-12">
-        <h2>Squad Statistics</h2>
+        <h2>SQUAD Statistics</h2>
     </div>
     <div class="col-md-4">
         <div class="card strpied-tabled-with-hover">
             <div class="card-header ">
-                <h4 class="card-title">Squad Statistics</h4>
+                <h4 class="card-title">squad Statistics</h4>
                 <p class="card-category">
                     <i class="fa fa-history"></i>
                     <?= $lifeStats->updatedAt ?>
@@ -143,12 +185,12 @@
                             <td class="text-right"><i><?= $lifeStats->squadScore ?></i> <i class="text-muted">(Rank: <?= $lifeStats->rankSquadScore ?>)</i></td>
                         </tr>
                         <tr>
-                            <td>Top 3</td>
-                            <td class="text-right"><i><?= $lifeStats->top3 ?></i></td>
+                            <td>Top 10</td>
+                            <td class="text-right"><i><?= $lifeStats->top10 ?></i></td>
                         </tr>
                         <tr>
-                            <td>Top 6</td>
-                            <td class="text-right"><i><?= $lifeStats->top6 ?></i></td>
+                            <td>Top 25</td>
+                            <td class="text-right"><i><?= $lifeStats->top25 ?></i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -157,8 +199,29 @@
     </div>
     <div class="col-md-8">
         <div class="card strpied-tabled-with-hover">
+            <div class="card-header ">
+                <p class="card-category">
+                    Rank Statistics
+                </p>
+            </div>
             <div class="card-body">
-                <div class="stats-chart" data-dates="<?= $squadDate ?>" data-kills="<?= $squadKills ?>" data-score='<?= $squadScore ?>' data-rank-score='<?= $squadRankScore ?>' data-rank-win='<?= $squadRankTop1 ?>'  data-rank-kills='<?= $squadRankKills ?>'></div>
+                <div class="rank-chart" data-rank='<?= $squadRankScore ?>' data-color="2" data-title="Score" style='height:91px;'></div>
+                <hr>
+                <div class="rank-chart" data-rank='<?= $squadRankKills ?>' data-color="3" data-title="Kills"  style='height:91px;'></div>
+                <hr>
+                <div class="rank-chart" data-rank='<?= $squadRankTop1 ?>' data-color="4" data-title="Top 1"  style='height:92px;'></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card strpied-tabled-with-hover">
+            <div class="card-header ">
+                <p class="card-category">
+                    Match Statistics
+                </p>
+            </div>
+            <div class="card-body">
+                <div class="stats-chart" data-dates="<?= $squadDate ?>" data-kills="<?= $squadKills ?>" data-score='<?= $squadScore ?>''></div>
             </div>
         </div>
     </div>
