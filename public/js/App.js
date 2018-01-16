@@ -4,7 +4,12 @@ App = {
             $('.stats-chart').each(function () {
                 var dataKills = $(this).attr('data-kills');
                 var dataScore = $(this).attr('data-score');
-                var dataDate = $(this).attr('data-dates');
+                var dataDate  = $(this).attr('data-dates');
+                var dataRankScore = $(this).attr('data-rank-score');
+                var dataRankWin   = $(this).attr('data-rank-win');
+                var dataRankKills = $(this).attr('data-rank-kills');
+
+                console.log(JSON.parse(dataRankWin));
 
                 Highcharts.chart(this, {
                     chart: {
@@ -50,6 +55,21 @@ App = {
                             }
                         }
 
+                    }, { // Tertiary yAxis
+                        gridLineWidth: 0,
+                        title: {
+                            text: 'Ranking',
+                            style: {
+                                color: Highcharts.getOptions().colors[2]
+                            }
+                        },
+                        labels: {
+                            format: '#{value}',
+                            style: {
+                                color: Highcharts.getOptions().colors[2]
+                            }
+                        },
+                        opposite: true
                     }],
                     tooltip: {
                         shared: true
@@ -64,6 +84,21 @@ App = {
                         name: 'Score',
                         type: 'spline',
                         data: JSON.parse(dataScore),
+                    }, {
+                        name: 'Ranks Wins',
+                        type: 'spline',
+                        yAxis: 2,
+                        data: JSON.parse(dataRankWin),
+                    }, {
+                        name: 'Ranks Kills',
+                        type: 'spline',
+                        yAxis: 2,
+                        data: JSON.parse(dataRankKills),
+                    }, {
+                        name: 'Ranks Score',
+                        type: 'spline',
+                        yAxis: 2,
+                        data: JSON.parse(dataRankScore),
                     }]
                 });
 

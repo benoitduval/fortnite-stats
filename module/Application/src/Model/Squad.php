@@ -14,4 +14,7 @@ class Squad extends AbstractModel
     protected $_kills = null;
     protected $_score = null;
     protected $_updatedAt = null;
+    protected $_rankScore = null;
+    protected $_rankKills = null;
+    protected $_rankTop1 = null;
 }

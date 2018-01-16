@@ -38,26 +38,35 @@ class ConsoleController extends AbstractController
             $duo   = $data['stats']['p10'];
             $squad = $data['stats']['p9'];
             $data = [
-                'userId'       => $user->id,
-                'soloKills'    => $solo['kills']['value'],
-                'soloMatches'  => $solo['matches']['value'],
-                'soloScore'    => $solo['score']['value'],
-                'soloTop1'     => $solo['top1']['value'],
-                'top10'        => $solo['top10']['value'],
-                'top25'        => $solo['top25']['value'],
-                'duoMatches'   => $duo['matches']['value'],
-                'duoScore'     => $duo['score']['value'],
-                'duoKills'     => $duo['kills']['value'],
-                'duoTop1'      => $duo['top1']['value'],
-                'top5'         => $duo['top5']['value'],
-                'top12'        => $duo['top12']['value'],
-                'squadMatches' => $squad['matches']['value'],
-                'squadKills'   => $squad['kills']['value'],
-                'squadScore'   => $squad['score']['value'],
-                'squadTop1'    => $squad['top1']['value'],
-                'top3'         => $squad['top3']['value'],
-                'top6'         => $squad['top6']['value'],
-                'updatedAt'    => date('Y-m-d H:i:s', time()),
+                'userId'         => $user->id,
+                'soloKills'      => $solo['kills']['value'],
+                'soloMatches'    => $solo['matches']['value'],
+                'soloScore'      => $solo['score']['value'],
+                'soloTop1'       => $solo['top1']['value'],
+                'top10'          => $solo['top10']['value'],
+                'top25'          => $solo['top25']['value'],
+                'duoMatches'     => $duo['matches']['value'],
+                'duoScore'       => $duo['score']['value'],
+                'duoKills'       => $duo['kills']['value'],
+                'duoTop1'        => $duo['top1']['value'],
+                'top5'           => $duo['top5']['value'],
+                'top12'          => $duo['top12']['value'],
+                'squadMatches'   => $squad['matches']['value'],
+                'squadKills'     => $squad['kills']['value'],
+                'squadScore'     => $squad['score']['value'],
+                'squadTop1'      => $squad['top1']['value'],
+                'top3'           => $squad['top3']['value'],
+                'top6'           => $squad['top6']['value'],
+                'rankSoloScore'  => $solo['score']['rank'],
+                'rankSoloKills'  => $solo['kills']['rank'],
+                'rankDuoScore'   => $duo['score']['rank'],
+                'rankDuoKills'   => $duo['kills']['rank'],
+                'rankSquadScore' => $squad['score']['rank'],
+                'rankSquadKills' => $squad['kills']['rank'],
+                'rankSoloTop1'   => $solo['top1']['rank'],
+                'rankDuoTop1'    => $duo['top1']['rank'],
+                'rankSquadTop1'  => $squad['top1']['rank'],
+                'updatedAt'      => date('Y-m-d H:i:s', time()),
             ];
 
             $lifeStats = $this->lifetimeTable->fetchOne(['userId' => $user->id]);
@@ -76,6 +85,9 @@ class ConsoleController extends AbstractController
                         'kills'     => $solo['kills']['value'] - $lifeStats->soloKills,
                         'score'     => $solo['score']['value'] - $lifeStats->soloScore,
                         'updatedAt' => date('Y-m-d H:i:s', time()),
+                        'rankScore' => $lifeStats->rankSoloScore,
+                        'rankKills' => $lifeStats->rankSoloKills,
+                        'rankTop1'  => $lifeStats->rankSoloTop1,
                     ];
 
                     $this->soloTable->save($diff);
@@ -95,6 +107,9 @@ class ConsoleController extends AbstractController
                         'kills'     => $duo['kills']['value'] - $lifeStats->duoKills,
                         'score'     => $duo['score']['value'] - $lifeStats->duoScore,
                         'updatedAt' => date('Y-m-d H:i:s', time()),
+                        'rankScore' => $lifeStats->rankDuoScore,
+                        'rankKills' => $lifeStats->rankDuoKills,
+                        'rankTop1'  => $lifeStats->rankDuoTop1,
                     ];
 
                     $this->duoTable->save($diff);
@@ -114,6 +129,9 @@ class ConsoleController extends AbstractController
                         'kills'     => $squad['kills']['value'] - $lifeStats->squadKills,
                         'score'     => $squad['score']['value'] - $lifeStats->squadScore,
                         'updatedAt' => date('Y-m-d H:i:s', time()),
+                        'rankScore' => $lifeStats->rankSquadScore,
+                        'rankKills' => $lifeStats->rankSquadKills,
+                        'rankTop1'  => $lifeStats->rankSquadTop1,
                     ];
 
                     $this->squadTable->save($diff);

@@ -26,4 +26,13 @@ class Lifetime extends AbstractModel
     protected $_duoScore = null;
     protected $_squadScore = null;
     protected $_updatedAt = null;
+    protected $_rankSoloScore = null;
+    protected $_rankSoloKills = null;
+    protected $_rankDuoScore = null;
+    protected $_rankDuoKills = null;
+    protected $_rankSquadScore = null;
+    protected $_rankSquadKills = null;
+    protected $_rankSoloTop1 = null;
+    protected $_rankDuoTop1 = null;
+    protected $_rankSquadTop1 = null;
 }

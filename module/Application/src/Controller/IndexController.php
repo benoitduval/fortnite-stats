@@ -28,14 +28,23 @@ class IndexController extends AbstractController
     public function statsAction()
     {
         $soloKills  = [];
+        $soloRankKills  = [];
+        $soloRankScore  = [];
+        $soloRankTop1    = [];
         $soloScore  = [];
         $soloDate   = [];
         $duoKills   = [];
         $duoScore   = [];
         $duoDate    = [];
-        $squadKills = [];
-        $squadScore = [];
-        $squadDate  = [];
+        $duoRankKills  = [];
+        $duoRankScore  = [];
+        $duoRankTop1    = [];
+        $squadKills      = [];
+        $squadScore      = [];
+        $squadDate       = [];
+        $squadRankKills  = [];
+        $squadRankScore  = [];
+        $squadRankTop1    = [];
         $lifeStats  = [];
         $config  = $this->get('config');
 
@@ -55,6 +64,9 @@ class IndexController extends AbstractController
                 } else {
                     $soloScore[] = (int) $stats->score;
                 }
+                $rankSoloTop1[] = (int) $stats->rankTop1;
+                $soloRankKills[] = (int) $stats->rankKills;
+                $soloRankScore[] = (int) $stats->rankScore;
                 $soloKills[] = (int) $stats->kills;
                 $soloDate[]  = $stats->updatedAt;
             }
@@ -71,6 +83,9 @@ class IndexController extends AbstractController
                 } else {
                     $duoScore[] = (int) $stats->score;
                 }
+                $rankDuoTop1[] = (int) $stats->rankTop1;
+                $duoRankKills[] = (int) $stats->rankKills;
+                $duoRankScore[] = (int) $stats->rankScore;
                 $duoKills[] = (int) $stats->kills;
                 $duoDate[]  = $stats->updatedAt;
             }
@@ -87,6 +102,9 @@ class IndexController extends AbstractController
                 } else {
                     $squadScore[] = (int) $stats->score;
                 }
+                $rankSquadTop1[] = (int) $stats->rankTop1;
+                $squadRankKills[] = (int) $stats->rankKills;
+                $squadRankScore[] = (int) $stats->rankScore;
                 $squadKills[] = (int) $stats->kills;
                 $squadDate[]  = $stats->updatedAt;
             }
@@ -117,33 +135,41 @@ class IndexController extends AbstractController
                 $duo   = $data['stats']['p10'];
                 $squad = $data['stats']['p9'];
                 $data = [
-                    'userId'       => $user->id,
-                    'soloKills'    => $solo['kills']['value'],
-                    'soloMatches'  => $solo['matches']['value'],
-                    'soloScore'    => $solo['score']['value'],
-                    'soloTop1'     => $solo['top1']['value'],
-                    'top10'        => $solo['top10']['value'],
-                    'top25'        => $solo['top25']['value'],
-                    'duoMatches'   => $duo['matches']['value'],
-                    'duoScore'     => $duo['score']['value'],
-                    'duoKills'     => $duo['kills']['value'],
-                    'duoTop1'      => $duo['top1']['value'],
-                    'top5'         => $duo['top5']['value'],
-                    'top12'        => $duo['top12']['value'],
-                    'squadMatches' => $squad['matches']['value'],
-                    'squadKills'   => $squad['kills']['value'],
-                    'squadScore'   => $squad['score']['value'],
-                    'squadTop1'    => $squad['top1']['value'],
-                    'top3'         => $squad['top3']['value'],
-                    'top6'         => $squad['top6']['value'],
-                    'updatedAt'    => date('Y-m-d H:i:s', time()),
+                    'userId'         => $user->id,
+                    'soloKills'      => $solo['kills']['value'],
+                    'soloMatches'    => $solo['matches']['value'],
+                    'soloScore'      => $solo['score']['value'],
+                    'soloTop1'       => $solo['top1']['value'],
+                    'top10'          => $solo['top10']['value'],
+                    'top25'          => $solo['top25']['value'],
+                    'duoMatches'     => $duo['matches']['value'],
+                    'duoScore'       => $duo['score']['value'],
+                    'duoKills'       => $duo['kills']['value'],
+                    'duoTop1'        => $duo['top1']['value'],
+                    'top5'           => $duo['top5']['value'],
+                    'top12'          => $duo['top12']['value'],
+                    'squadMatches'   => $squad['matches']['value'],
+                    'squadKills'     => $squad['kills']['value'],
+                    'squadScore'     => $squad['score']['value'],
+                    'squadTop1'      => $squad['top1']['value'],
+                    'top3'           => $squad['top3']['value'],
+                    'top6'           => $squad['top6']['value'],
+                    'rankSoloScore'  => $solo['score']['rank'],
+                    'rankSoloKills'  => $solo['kills']['rank'],
+                    'rankDuoScore'   => $duo['score']['rank'],
+                    'rankDuoKills'   => $duo['kills']['rank'],
+                    'rankSquadScore' => $squad['score']['rank'],
+                    'rankSquadKills' => $squad['kills']['rank'],
+                    'rankSoloTop1'   => $solo['top1']['rank'],
+                    'rankDuoTop1'    => $duo['top1']['rank'],
+                    'rankSquadTop1'  => $squad['top1']['rank'],
+                    'updatedAt'      => date('Y-m-d H:i:s', time()),
                 ];
                 $lifeStats = $this->lifetimeTable->save($data);
             }
         }
 
         if (!$user) $this->redirect()->toUrl('/');
-
         return new ViewModel([
             'lifeStats'  => $lifeStats,
             'soloScore'  => json_encode($soloScore),
@@ -154,6 +180,15 @@ class IndexController extends AbstractController
             'duoDates'   => htmlspecialchars(json_encode($duoDate), ENT_QUOTES, 'UTF-8'),
             'squadScore' => json_encode($squadScore),
             'squadKills' => json_encode($squadKills),
+            'soloRankKills' => json_encode($soloRankKills),
+            'soloRankTop1' => json_encode($soloRankTop1),
+            'soloRankScore' => json_encode($soloRankScore),
+            'duoRankScore' => json_encode($duoRankScore),
+            'duoRankTop1' => json_encode($duoRankTop1),
+            'duoRankKills' => json_encode($duoRankKills),
+            'squadRankScore' => json_encode($squadRankScore),
+            'squadRankTop1' => json_encode($squadRankTop1),
+            'squadRankKills' => json_encode($squadRankKills),
             'squadDate'  => htmlspecialchars(json_encode($squadDate), ENT_QUOTES, 'UTF-8'),
             'nickname'   => $nickname,
         ]);
