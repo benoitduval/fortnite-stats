@@ -103,12 +103,57 @@ App = {
     },
 
     initRankCharts: function() {
+        /**
+         * Override the reset function to avoid pointer reset if it hab been cleary disabled
+         * (Required for synchronized charts only)
+         */
+        var pointerReset = Highcharts.Pointer.prototype.reset;
+        Highcharts.Pointer.prototype.reset = function () {
+            if (this.chart.disablePointerReset) {
+                return undefined;
+            }
+
+            // Keep native bahavior
+            return pointerReset.apply(this, arguments);
+        };
+
+        /**
+         * Highlight a point by calling onMouseOver (which handle tooltip refresh) and drawing crosshair
+         */
+        Highcharts.Point.prototype.highlight = function (event) {
+            this.onMouseOver(); // Show the hover marker
+            this.series.chart.xAxis[0].drawCrosshair(event, this); // Show the crosshair
+        };
+
+        /**
+         * Synchronize zooming through the setExtremes event handler.
+         */
+        function syncExtremes(e) {
+            var thisChart = this.chart;
+
+            // Extract chart index which are synchronize with thisChart
+            var syncedIndex = $(thisChart.container).parents('.card-body').find('.rank-chart').map(function(i, div) {
+                return $(div).attr('data-highcharts-chart') * 1;
+            }).toArray();
+
+            if (e.trigger !== 'syncExtremes') { // Prevent feedback loop
+                Highcharts.each(Highcharts.charts, function (chart, i) {
+                    // Affect only chart synchronized with thisChart
+                    if (chart !== thisChart && syncedIndex.indexOf(i) >= 0) {
+                        if (chart.xAxis[0].setExtremes) { // It is null while updating
+                            chart.xAxis[0].setExtremes(e.min, e.max, undefined, false, { trigger: 'syncExtremes' });
+                        }
+                    }
+                });
+            }
+        }
+
         $('.rank-chart').each(function () {
             var dataRankScore = $(this).attr('data-rank');
             var title = $(this).attr('data-title');
             var color = $(this).attr('data-color');
 
-            Highcharts.chart(this, {
+            var chart = Highcharts.chart(this, {
                 chart: {
                     zoomType: 'x'
                 },
@@ -122,10 +167,13 @@ App = {
                 },
                 xAxis: [{
                     // categories: JSON.parse(dataDate),
-                    // crosshair: true,
+                    crosshair: true,
                     labels: {
                       enabled: false
-                    }
+                    },
+                    events: {
+                        setExtremes: syncExtremes
+                    },
                 }],
                 legend: {
                     enabled: false
@@ -161,10 +209,55 @@ App = {
                 credits: {
                     enabled: false
                 },
+                tooltip: {
+                    positioner: function () {
+                        return {
+                            x: this.chart.chartWidth - this.label.width, // right aligned
+                            y: -10
+                        };
+                    },
+                    borderWidth: 0,
+                    backgroundColor: 'none',
+                    pointFormat: '{point.y}',
+                    headerFormat: '',
+                    shadow: false,
+                    style: {
+                        fontSize: '12px'
+                    }
+                },
                 series: [{
                     type: 'area',
-                    data: JSON.parse(dataRankScore)
+                    data: JSON.parse(dataRankScore),
+                    tooltip: {
+                        valueSuffix: 'th' // Will be incoherent with first, second & third places
+                    }
                 }]
+            });
+
+            // Custom attribute to disable the pointer reset behavior
+            chart.disablePointerReset = true;
+        });
+
+        var syncedGroups = ['solo-rank-charts', 'duo-rank-charts', 'squad-rank-charts'];
+        syncedGroups.forEach(function(id) {
+            $('#' + id).bind('mousemove touchmove touchstart', function (e) {
+                var chart,
+                    point,
+                    event,
+                    chartIndex;
+
+                //Foreach chart if the synced group
+                $('#' + id + ' .rank-chart').each(function(i, div) {
+                    chartIndex = $(div).attr('data-highcharts-chart');
+
+                    chart = Highcharts.charts[chartIndex];
+                    event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+                    point = chart.series[0].searchPoint(event, true); // Get the hovered point
+
+                    if (point) {
+                        point.highlight(e);
+                    }
+                });
             });
         });
     }
