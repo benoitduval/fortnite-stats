@@ -155,7 +155,8 @@ App = {
 
             var chart = Highcharts.chart(this, {
                 chart: {
-                    zoomType: 'x'
+                    zoomType: 'x',
+                    marginTop: 15
                 },
                 title: {
                     text: ''
@@ -222,14 +223,15 @@ App = {
                     headerFormat: '',
                     shadow: false,
                     style: {
-                        fontSize: '12px'
+                        fontSize: '10px',
+                        fontWeight: 'bold'
                     }
                 },
                 series: [{
                     type: 'area',
                     data: JSON.parse(dataRankScore),
                     tooltip: {
-                        valueSuffix: 'th' // Will be incoherent with first, second & third places
+                        valuePrefix: '#'
                     }
                 }]
             });
