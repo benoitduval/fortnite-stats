@@ -18,7 +18,7 @@ return [
         'dsn'      => 'mysql:dbname=;host=127.0.0.1',
     ],
     'api' => [
-        'fornite' => [
+        'fortnite' => [
             'url' => 'https://api.fortnitetracker.com/v1/profile/pc',
             'key' => '',
         ]
