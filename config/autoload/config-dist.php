@@ -16,37 +16,16 @@ return [
         'username' => '',
         'password' => '',
         'dsn'      => 'mysql:dbname=;host=127.0.0.1',
-
-        'migration' => [
-            'current' => '',
-            'old-db'  => ''
-        ],
-    ],
-    'caches' => [
-        'memcached' => [
-            'adapter' => [
-                'options'  => [
-                    'servers'   => [
-                        [''/* host */, /* port */]
-                    ],
-                ],
-            ],
-        ],
-    ],
-    'mail' => [
-        'address'  => '',
-        'password' => '',
-        'allowed'  => true
     ],
     'api' => [
-        'googlemaps' => [
-            'url' => '',
+        'fortnite' => [
+            'url' => 'https://api.fortnitetracker.com/v1/profile/pc',
             'key' => '',
         ]
     ],
     'version' => [
-        'css' => ,
-        'js'  => ,
+        'css' => 1,
+        'js'  => 1,
     ],
     'salt'    => '',
     'baseUrl' => '',
