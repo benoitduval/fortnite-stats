@@ -83,7 +83,7 @@ class IndexController extends AbstractController
             foreach ($squadStats as $stats) {
                 if ($stats->top1) {
                     $squadKills[] = [
-                        'y' => (int) $stats->score,
+                        'y' => (int) $stats->kills,
                         'marker' => [
                             'symbol' => 'url(/img/trophy.png)'
                         ]
