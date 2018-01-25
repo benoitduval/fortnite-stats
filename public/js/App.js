@@ -1,9 +1,9 @@
 App = {
     initHighcharts: function() {
+
         $('.stats-chart').each(function () {
-            var dataKills = $(this).attr('data-kills');
-            var dataScore = $(this).attr('data-score');
-            var dataDate  = $(this).attr('data-dates');
+            var dataKills     = $(this).attr('data-kills');
+            var dataDate      = $(this).attr('data-dates');
             var dataRankScore = $(this).attr('data-rank-score');
             var dataRankWin   = $(this).attr('data-rank-win');
             var dataRankKills = $(this).attr('data-rank-kills');
@@ -20,48 +20,23 @@ App = {
                 },
                 xAxis: [{
                     categories: JSON.parse(dataDate),
+                    type: 'datetime',
                     crosshair: true,
                     labels: {
                       enabled: false
                     }
                 }],
-                yAxis: [{ // Primary yAxis
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
-                    },
+                yAxis: {
                     title: {
-                        text: 'Score',
-                        style: {
-                            color: Highcharts.getOptions().colors[1]
-                        }
+                        text: ''
                     },
-                    opposite: true
-
-                }, { // Secondary yAxis
-                    gridLineWidth: 0,
-                    title: {
-                        text: 'Kills',
-                        style: {
-                            color: Highcharts.getOptions().colors[0]
-                        }
-                    },
-                    labels: {
-                        format: '{value}',
-                        style: {
-                            color: Highcharts.getOptions().colors[0]
-                        }
-                    }
-
-                }],
-                tooltip: {
-                    shared: true
+                    min: 0,
+                },
+                legend: {
+                    enabled: false
                 },
                 plotOptions: {
                     area: {
-                        lineColor: Highcharts.getOptions().colors[0],
                         fillColor: {
                             linearGradient: {
                                 x1: 0,
@@ -75,8 +50,7 @@ App = {
                             ]
                         },
                         marker: {
-                            radius: 2,
-                            fillColor: Highcharts.getOptions().colors[0]
+                            radius: 2
                         },
                         lineWidth: 1,
                         states: {
@@ -87,16 +61,11 @@ App = {
                         threshold: null
                     }
                 },
-                series: [{
-                    name: 'Kills',
-                    type: 'area',
-                    yAxis: 1,
-                    data: JSON.parse(dataKills),
 
-                }, {
-                    name: 'Score',
-                    type: 'spline',
-                    data: JSON.parse(dataScore),
+                series: [{
+                    type: 'area',
+                    name: 'Kills',
+                    data: JSON.parse(dataKills)
                 }]
             });
         });
