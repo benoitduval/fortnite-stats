@@ -58,7 +58,7 @@
                       <div class="card-header ">
                           <h4 class="card-title">Ranking Evolution</h4>
                       </div>
-                      <div id="solo-rank-charts" class="card-body">
+                      <div id="<?= $category ?>-rank-charts" class="card-body">
                           <div class="rank-chart" data-rank='<?= json_encode($result[$category]["rank"]["kills"]) ?>' data-color="3" data-title="Kills"  style='height:100px;'></div>
                           <hr>
                           <div class="rank-chart" data-rank='<?= json_encode($result[$category]["rank"]["top1"]) ?>' data-color="4" data-title="Top 1"  style='height:100px;'></div>
