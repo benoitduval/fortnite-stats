@@ -97,7 +97,7 @@ App = {
                         cursor: 'pointer',
                         dataLabels: {
                             enabled: true,
-                            format: '<b>[{point.name}]Kills</b>: {point.y} Games ({point.percentage:.1f}%)',
+                            format: '<b>[{point.name}] Kills</b> ({point.percentage:.1f}%)',
                             style: {
                                 color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                             }
