@@ -31,6 +31,7 @@ App = {
                         text: ''
                     },
                     min: 0,
+                    allowDecimals: false,
                 },
                 legend: {
                     enabled: false

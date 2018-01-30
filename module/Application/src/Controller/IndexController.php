@@ -27,92 +27,42 @@ class IndexController extends AbstractController
 
     public function statsAction()
     {
-        $soloKills      = [];
-        $soloDate       = [];
-        $duoKills       = [];
-        $duoDate        = [];
-        $squadKills     = [];
-        $squadDate      = [];
-        $lifeStats      = [];
-        $rankSoloKills  = [];
-        $rankSoloTop1   = [];
-        $rankSoloScore  = [];
-        $rankDuoKills   = [];
-        $rankDuoTop1    = [];
-        $rankDuoScore   = [];
-        $rankSquadKills = [];
-        $rankSquadTop1  = [];
-        $rankSquadScore = [];
+        $result  = [];
         $config  = $this->get('config');
+        $from    = $this->params()->fromQuery('from', null);
+        $to      = $this->params()->fromQuery('to', null);
 
         $nickname = $this->params()->fromQuery('user', null);
         if ($user = $this->userTable->fetchOne(['nickname' => $nickname])) {
             $lifeStats  = $this->lifetimeTable->fetchOne(['userId' => $user->id]);
 
-            $soloStats  = $this->soloTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
-            foreach ($soloStats as $stats) {
-                if ($stats->top1) {
-                    $soloKills[] = [
-                        'y' => (int) $stats->kills,
-                        'marker' => [
-                            'symbol' => 'url(/img/trophy.png)'
-                        ]
-                    ];
-                } else {
-                    $soloKills[] = (int) $stats->kills;
+            $options['userId'] = $user->id;
+            if ($from) $options['updatedAt >= ?'] = $from . ' 00:00:00';
+            if ($to) $options['updatedAt <= ?']   = $to . ' 23:59:59';
+
+            foreach (['solo', 'duo', 'squad'] as $category) {
+                $table = $category . 'Table';
+                $statistics  = $this->$table->fetchAll($options, 'id ASC');
+                foreach ($statistics as $stats) {
+                    if ($stats->top1) {
+                        $result[$category]['kills'][] = [
+                            'y' => (int) $stats->kills,
+                            'marker' => [
+                                'symbol' => 'url(/img/trophy.png)'
+                            ]
+                        ];
+                    } else {
+                        $result[$category]['kills'][] = (int) $stats->kills;
+                    }
+                    $result[$category]['dates'][] = $stats->updatedAt;
                 }
-                $soloDate[]  = $stats->updatedAt;
-            }
 
-            $duoStats   = $this->duoTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
-            foreach ($duoStats as $stats) {
-                if ($stats->top1) {
-                    $duoKills[] = [
-                        'y' => (int) $stats->kills,
-                        'marker' => [
-                            'symbol' => 'url(/img/trophy.png)'
-                        ]
-                    ];
-                } else {
-                    $duoKills[] = (int) $stats->kills;
+                $rankTable = 'rank' . ucfirst($category) . 'Table';
+                $rankStats  = $this->$rankTable->fetchAll($options, 'id ASC');
+                foreach ($rankStats as $stats) {
+                    $result[$category]['rank']['kills'][] = (int) $stats->rankKills;
+                    $result[$category]['rank']['top1'][] = (int) $stats->rankTop1;
                 }
-                $duoDate[]  = $stats->updatedAt;
-            }
-
-            $squadStats = $this->squadTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
-            foreach ($squadStats as $stats) {
-                if ($stats->top1) {
-                    $squadKills[] = [
-                        'y' => (int) $stats->kills,
-                        'marker' => [
-                            'symbol' => 'url(/img/trophy.png)'
-                        ]
-                    ];
-                } else {
-                    $squadKills[] = (int) $stats->kills;
-                }
-                $squadDate[]  = $stats->updatedAt;
-            }
-
-            $rankStats  = $this->rankSoloTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
-            foreach ($rankStats as $stats) {
-                $rankSoloKills[] = (int) $stats->rankKills;
-                $rankSoloTop1[] = (int) $stats->rankTop1;
-                $rankSoloScore[] = (int) $stats->rankScore;
-            }
-
-            $rankStats  = $this->rankDuoTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
-            foreach ($rankStats as $stats) {
-                $rankDuoKills[] = (int) $stats->rankKills;
-                $rankDuoTop1[] = (int) $stats->rankTop1;
-                $rankDuoScore[] = (int) $stats->rankScore;
-            }
-
-            $rankStats  = $this->rankSquadTable->fetchAll(['userId' => $user->id, 'updatedAt > ?' => strtotime('- 14 days')], 'id ASC');
-            foreach ($rankStats as $stats) {
-                $rankSquadKills[] = (int) $stats->rankKills;
-                $rankSquadTop1[] = (int) $stats->rankTop1;
-                $rankSquadScore[] = (int) $stats->rankScore;
             }
 
         } else {
@@ -177,22 +127,8 @@ class IndexController extends AbstractController
 
         if (!$user) $this->redirect()->toUrl('/');
         return new ViewModel([
+            'result'         => $result,
             'lifeStats'      => $lifeStats,
-            'soloKills'      => json_encode($soloKills),
-            'soloDate'       => htmlspecialchars(json_encode($soloDate), ENT_QUOTES, 'UTF-8'),
-            'duoKills'       => json_encode($duoKills),
-            'duoDate'        => htmlspecialchars(json_encode($duoDate), ENT_QUOTES, 'UTF-8'),
-            'squadKills'     => json_encode($squadKills),
-            'soloRankKills'  => json_encode($rankSoloKills),
-            'soloRankTop1'   => json_encode($rankSoloTop1),
-            'soloRankScore'  => json_encode($rankSoloScore),
-            'duoRankKills'   => json_encode($rankDuoKills),
-            'duoRankTop1'    => json_encode($rankDuoTop1),
-            'duoRankScore'   => json_encode($rankDuoScore),
-            'squadRankKills' => json_encode($rankSquadKills),
-            'squadRankTop1'  => json_encode($rankSquadTop1),
-            'squadRankScore' => json_encode($rankSquadScore),
-            'squadDate'      => htmlspecialchars(json_encode($squadDate), ENT_QUOTES, 'UTF-8'),
             'nickname'       => $nickname,
         ]);
     }
