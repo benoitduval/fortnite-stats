@@ -43,6 +43,8 @@ class IndexController extends AbstractController
             foreach (['solo', 'duo', 'squad'] as $category) {
                 $table = $category . 'Table';
                 $statistics  = $this->$table->fetchAll($options, 'id ASC');
+                $repartitionKills = ['0' => 0, '1-3' => 0, '4-6' => 0, '7-9' => 0, '10+' => 0];
+                $repartitionTop1  = ['0' => 0, '1-3' => 0, '4-6' => 0, '7-9' => 0, '10+' => 0];
                 foreach ($statistics as $stats) {
                     if ($stats->top1) {
                         $result[$category]['kills'][] = [
@@ -51,11 +53,44 @@ class IndexController extends AbstractController
                                 'symbol' => 'url(/img/trophy.png)'
                             ]
                         ];
+                        if (!$stats->kills) {
+                            $repartitionTop1['0'] ++;
+                        } else if ($stats->kills >= 1 && $stats->kills <= 3 ) {
+                            $repartitionTop1['1-3'] ++;
+                        } else if ($stats->kills >= 4 && $stats->kills <= 6 ) {
+                            $repartitionTop1['4-6'] ++;
+                        } else if ($stats->kills >= 7 && $stats->kills <= 9 ) {
+                            $repartitionTop1['7-9'] ++;
+                        } else {
+                            $repartitionTop1['10+'] ++;
+                        }
                     } else {
+                        if (!$stats->kills) {
+                            $repartitionKills['0'] ++;
+                        } else if ($stats->kills >= 1 && $stats->kills <= 3 ) {
+                            $repartitionKills['1-3'] ++;
+                        } else if ($stats->kills >= 4 && $stats->kills <= 6 ) {
+                            $repartitionKills['4-6'] ++;
+                        } else if ($stats->kills >= 7 && $stats->kills <= 9 ) {
+                            $repartitionKills['7-9'] ++;
+                        } else {
+                            $repartitionKills['10+'] ++;
+                        }
                         $result[$category]['kills'][] = (int) $stats->kills;
+                        $result[$category]['repartition']['kills'] = (int) $stats->kills;
                     }
                     $result[$category]['dates'][] = $stats->updatedAt;
                 }
+                $repartition = [];
+                foreach ($repartitionKills as $name => $value) {
+                    $repartition[] = ['name' => $name, 'y' => $value];
+                }
+                $result[$category]['repartition']['kills'] = $repartition;
+                $repartition = [];
+                foreach ($repartitionTop1 as $name => $value) {
+                    $repartition[] = ['name' => $name, 'y' => $value];
+                }
+                $result[$category]['repartition']['top1'] = $repartition;
 
                 $rankTable = 'rank' . ucfirst($category) . 'Table';
                 $rankStats  = $this->$rankTable->fetchAll($options, 'id ASC');

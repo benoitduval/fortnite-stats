@@ -72,6 +72,47 @@ App = {
         });
     },
 
+    initPieCharts: function () {
+        $('.repartition-chart').each(function () {
+            var data = $(this).attr('data-stats');
+            Highcharts.chart(this, {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: ' '
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name} Kills</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Kills',
+                    colorByPoint: true,
+                    data: JSON.parse(data)
+                }]
+            });
+        });
+    },
+
     initRankCharts: function() {
         /**
          * Override the reset function to avoid pointer reset if it hab been cleary disabled

@@ -75,6 +75,26 @@
                       </div>
                   </div>
               </div>
+              <div class="col-md-6">
+                  <div class="card strpied-tabled-with-hover">
+                      <div class="card-header ">
+                          <h4 class="card-title">Kills Repartition</h4>
+                      </div>
+                      <div class="card-body">
+                          <div class="repartition-chart" data-stats='<?= json_encode($result[$category]['repartition']['kills']) ?>'></div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                  <div class="card strpied-tabled-with-hover">
+                      <div class="card-header ">
+                          <h4 class="card-title">Top1 Repartition</h4>
+                      </div>
+                      <div class="card-body">
+                          <div class="repartition-chart" data-stats='<?= json_encode($result[$category]['repartition']['top1']) ?>'></div>
+                      </div>
+                  </div>
+              </div>
           </div>
       </div>
     <?php endforeach ?>
