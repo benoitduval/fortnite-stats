@@ -833,3 +833,7 @@
 .show>.nav-pills .nav-link:hover {
     background-color: #007bff;
 }
+
+.bootstrap-datetimepicker-widget table td.day {
+    line-height: 30px;
+}

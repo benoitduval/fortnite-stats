@@ -22,7 +22,6 @@ class IndexController extends AbstractController
 {
     public function indexAction()
     {
-
     }
 
     public function statsAction()
@@ -42,6 +41,10 @@ class IndexController extends AbstractController
 
             foreach (['solo', 'duo', 'squad'] as $category) {
                 $table = $category . 'Table';
+                $result[$category]['kills'] = [];
+                $result[$category]['rank']['kills'] = [];
+                $result[$category]['rank']['top1'] = [];
+                $result[$category]['dates'] = [];
                 $statistics  = $this->$table->fetchAll($options, 'id ASC');
                 $repartitionKills = ['0' => 0, '1-3' => 0, '4-6' => 0, '7-9' => 0, '10+' => 0];
                 $repartitionTop1  = ['0' => 0, '1-3' => 0, '4-6' => 0, '7-9' => 0, '10+' => 0];

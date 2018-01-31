@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
         <!-- CSS Files -->
         <link href="/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
         <link href="/css/light-bootstrap-dashboard.css?v=2.0.1" rel="stylesheet" />
         <!-- CSS Just for demo purpose, don't include it in your project -->
         <link href="/css/demo.css" rel="stylesheet" />
@@ -68,9 +69,11 @@
     <script src="/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
     <script src="/js/core/popper.min.js" type="text/javascript"></script>
     <script src="/js/core/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/moment-with-locales.min.js" type="text/javascript"></script>
+    <script src="/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
     <script src="/js/light-bootstrap-dashboard.js?v=2.0.1" type="text/javascript"></script>
     <script src="/js/Highcharts-6.0.2/code/highcharts.js"/></script>
-    <script src="https://code.highcharts.com/modules/annotations.js"></script>
+    <script src="https://code.highcharts.com/modules/no-data-to-display.js"></script>
 
     <script src="/js/App.js"></script>
     <script type="text/javascript">
@@ -78,6 +81,7 @@
             App.initHighcharts();
             App.initRankCharts();
             App.initPieCharts();
+            App.initDatePicker();
         });
     </script>
 
