@@ -274,8 +274,8 @@ App = {
     },
 
     initDatePicker: function() {
-        $('.datepicker').datetimepicker({
-            format: 'YYYY-DD-MM',
+        $('.datepicker-from').datetimepicker({
+            format: 'YYYY-MM-DD',
             maxDate: 'now',
             icons: {
                 time: "fa fa-clock-o",
@@ -288,6 +288,29 @@ App = {
                 clear: 'fa fa-trash',
                 close: 'fa fa-remove'
             },
+        });
+
+        $('.datepicker-to').datetimepicker({
+            format: 'YYYY-MM-DD',
+            maxDate: 'now',
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove'
+            },
+        });
+
+        $(".datepicker-from").on("dp.change", function (e) {
+            $('.datepicker-to').data("DateTimePicker").minDate(e.date);
+        });
+        $(".datepicker-to").on("dp.change", function (e) {
+            $('.datepicker-from').data("DateTimePicker").maxDate(e.date);
         });
     }
 }
