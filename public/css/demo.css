@@ -837,3 +837,18 @@
 .bootstrap-datetimepicker-widget table td.day {
     line-height: 30px;
 }
+
+.kills-per-match .card-title {
+    display: inline-block;
+}
+
+.kills-per-match .form-check {
+    padding-left: 15px;
+    float: right;
+}
+
+/* Dafuq ? alignment seems weird on original light-bootstrap them */
+.kills-per-match .form-check .form-check-sign::before,
+.kills-per-match .form-check .form-check-sign::after {
+    margin-top: 0;
+}
