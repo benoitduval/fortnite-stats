@@ -68,6 +68,48 @@ App = {
                 }]
             });
         });
+
+         $('.top-one-only').on('click', function(ev) {
+            var target = $(ev.target);
+            var isChecked = target.prop('checked');
+            var category = target.attr('data-category');
+            var statsChart = $(target.parents('.kills-per-match').find('.stats-chart'));
+            var chartIndex = statsChart.attr('data-highcharts-chart');
+
+            // Parse original data (full)
+            var dataDates = JSON.parse(statsChart.attr('data-dates'));
+            var dataKills = JSON.parse(statsChart.attr('data-kills'));
+
+            if (isChecked) {
+                // Filter kills & date by keeping only point with a marker (ie: top1)
+                var filteredDates = [];
+                var filteredKills = dataKills.filter(function(value, index) {
+                    var toKeep = value.marker && value.y;
+
+                    if (toKeep) {
+                        filteredDates.push(dataDates[index]);
+                    }
+
+                    return toKeep;
+                }).map(function(value) {
+                    // Marker is not more required, only keep the primitive value
+                    return value.y;
+                });
+
+                dataDates = filteredDates;
+                dataKills = filteredKills;
+            }
+
+            // Update the chart using dates & kills (filtered or not)
+            Highcharts.charts[chartIndex].update({
+                xAxis: [{
+                    categories: dataDates,
+                }],
+                series: [{
+                    data: dataKills
+                }]
+            });
+        });
     },
 
     initPieCharts: function () {
