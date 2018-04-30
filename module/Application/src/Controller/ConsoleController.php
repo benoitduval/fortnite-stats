@@ -79,7 +79,7 @@ class ConsoleController extends AbstractController
                     $console->writeLine('Updating Solo Stats.', Color::LIGHT_BLUE);
                     $diff = [
                         'userId'    => $user->id,
-                        'top1'      => $top1,
+                        'top1'      => $solo['top1']['value'] - $lifeStats->soloTop1,
                         'top10'     => $solo['top10']['value'] - $lifeStats->top10,
                         'top25'     => $solo['top25']['value'] - $lifeStats->top25,
                         'matches'   => $matches,
@@ -99,7 +99,7 @@ class ConsoleController extends AbstractController
                     $console->writeLine('Updating Duo Stats.', Color::LIGHT_BLUE);
                     $diff = [
                         'userId'    => $user->id,
-                        'top1'      => $top1,
+                        'top1'      => $duo['top1']['value'] - $lifeStats->duoTop1,
                         'top5'      => $duo['top5']['value'] - $lifeStats->top5,
                         'top12'     => $duo['top12']['value'] - $lifeStats->top12,
                         'matches'   => $matches,
@@ -119,7 +119,7 @@ class ConsoleController extends AbstractController
                     $console->writeLine('Updating Squad Stats.', Color::LIGHT_BLUE);
                     $diff = [
                         'userId'    => $user->id,
-                        'top1'      => $top1,
+                        'top1'      => $squad['top1']['value'] - $lifeStats->squadTop1,
                         'top3'      => $squad['top3']['value'] - $lifeStats->top3,
                         'top6'      => $squad['top6']['value'] - $lifeStats->top6,
                         'matches'   => $matches,
