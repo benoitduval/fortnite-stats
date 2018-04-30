@@ -74,14 +74,16 @@ class ConsoleController extends AbstractController
                 $console->writeLine('New User, creating lifeStats.', Color::MAGENTA);
                 $this->lifetimeTable->save($data);
             } else {
-                if ($data['soloMatches'] != $lifeStats->soloMatches) {
+                $top1    = $solo['top1']['value'] - $lifeStats->soloTop1;
+                $matches = $solo['matches']['value'] - $lifeStats->soloMatches;
+                if ($data['soloMatches'] != $lifeStats->soloMatches && $matches == 1 && $top1 >= 0) {
                     $console->writeLine('Updating Solo Stats.', Color::LIGHT_BLUE);
                     $diff = [
                         'userId'    => $user->id,
-                        'top1'      => $solo['top1']['value'] - $lifeStats->soloTop1,
+                        'top1'      => $top1,
                         'top10'     => $solo['top10']['value'] - $lifeStats->top10,
                         'top25'     => $solo['top25']['value'] - $lifeStats->top25,
-                        'matches'   => $solo['matches']['value'] - $lifeStats->soloMatches,
+                        'matches'   => $matches,
                         'kills'     => $solo['kills']['value'] - $lifeStats->soloKills,
                         'score'     => $solo['score']['value'] - $lifeStats->soloScore,
                         'updatedAt' => date('Y-m-d H:i:s', time())
@@ -93,14 +95,16 @@ class ConsoleController extends AbstractController
                     $this->lifetimeTable->save($data);
                 }
 
-                if ($data['duoMatches'] != $lifeStats->duoMatches) {
+                $top1    = $duo['top1']['value'] - $lifeStats->duoTop1;
+                $matches = $duo['matches']['value'] - $lifeStats->duoMatches;
+                if ($data['duoMatches'] != $lifeStats->duoMatches  && $matches == 1 && $top1 >= 0) {
                     $console->writeLine('Updating Duo Stats.', Color::LIGHT_BLUE);
                     $diff = [
                         'userId'    => $user->id,
-                        'top1'      => $duo['top1']['value'] - $lifeStats->duoTop1,
+                        'top1'      => $top1,
                         'top5'      => $duo['top5']['value'] - $lifeStats->top5,
                         'top12'     => $duo['top12']['value'] - $lifeStats->top12,
-                        'matches'   => $duo['matches']['value'] - $lifeStats->duoMatches,
+                        'matches'   => $matches,
                         'kills'     => $duo['kills']['value'] - $lifeStats->duoKills,
                         'score'     => $duo['score']['value'] - $lifeStats->duoScore,
                         'updatedAt' => date('Y-m-d H:i:s', time())
@@ -112,14 +116,16 @@ class ConsoleController extends AbstractController
                     $this->lifetimeTable->save($data);
                 }
 
-                if ($data['squadMatches'] != $lifeStats->squadMatches) {
+                $top1    = $squad['top1']['value'] - $lifeStats->squadTop1;
+                $matches = $squad['matches']['value'] - $lifeStats->squadMatches;
+                if ($data['squadMatches'] != $lifeStats->squadMatches  && $matches == 1 && $top1 >= 0) {
                     $console->writeLine('Updating Squad Stats.', Color::LIGHT_BLUE);
                     $diff = [
                         'userId'    => $user->id,
-                        'top1'      => $squad['top1']['value'] - $lifeStats->squadTop1,
+                        'top1'      => $top1,
                         'top3'      => $squad['top3']['value'] - $lifeStats->top3,
                         'top6'      => $squad['top6']['value'] - $lifeStats->top6,
-                        'matches'   => $squad['matches']['value'] - $lifeStats->squadMatches,
+                        'matches'   => $matches,
                         'kills'     => $squad['kills']['value'] - $lifeStats->squadKills,
                         'score'     => $squad['score']['value'] - $lifeStats->squadScore,
                         'updatedAt' => date('Y-m-d H:i:s', time())
