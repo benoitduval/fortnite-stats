@@ -74,9 +74,8 @@ class ConsoleController extends AbstractController
                 $console->writeLine('New User, creating lifeStats.', Color::MAGENTA);
                 $this->lifetimeTable->save($data);
             } else {
-                $top1    = $solo['top1']['value'] - $lifeStats->soloTop1;
                 $matches = $solo['matches']['value'] - $lifeStats->soloMatches;
-                if ($data['soloMatches'] != $lifeStats->soloMatches && $matches == 1 && $top1 >= 0) {
+                if ($data['soloMatches'] != $lifeStats->soloMatches && $matches == 1) {
                     $console->writeLine('Updating Solo Stats.', Color::LIGHT_BLUE);
                     $diff = [
                         'userId'    => $user->id,
@@ -95,9 +94,8 @@ class ConsoleController extends AbstractController
                     $this->lifetimeTable->save($data);
                 }
 
-                $top1    = $duo['top1']['value'] - $lifeStats->duoTop1;
                 $matches = $duo['matches']['value'] - $lifeStats->duoMatches;
-                if ($data['duoMatches'] != $lifeStats->duoMatches  && $matches == 1 && $top1 >= 0) {
+                if ($data['duoMatches'] != $lifeStats->duoMatches  && $matches == 1) {
                     $console->writeLine('Updating Duo Stats.', Color::LIGHT_BLUE);
                     $diff = [
                         'userId'    => $user->id,
@@ -116,9 +114,8 @@ class ConsoleController extends AbstractController
                     $this->lifetimeTable->save($data);
                 }
 
-                $top1    = $squad['top1']['value'] - $lifeStats->squadTop1;
                 $matches = $squad['matches']['value'] - $lifeStats->squadMatches;
-                if ($data['squadMatches'] != $lifeStats->squadMatches  && $matches == 1 && $top1 >= 0) {
+                if ($data['squadMatches'] != $lifeStats->squadMatches  && $matches == 1) {
                     $console->writeLine('Updating Squad Stats.', Color::LIGHT_BLUE);
                     $diff = [
                         'userId'    => $user->id,
