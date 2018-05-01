@@ -69,18 +69,6 @@
                       </div>
                   </div>
               </div>
-              <div class="col-md-8">
-                  <div class="card strpied-tabled-with-hover">
-                      <div class="card-header ">
-                          <h4 class="card-title">Ranking Evolution</h4>
-                      </div>
-                      <div id="<?= $category ?>-rank-charts" class="card-body">
-                          <div class="rank-chart" data-rank='<?= json_encode($result[$category]["rank"]["kills"]) ?>' data-color="3" data-title="Kills"  style='height:100px;'></div>
-                          <hr>
-                          <div class="rank-chart" data-rank='<?= json_encode($result[$category]["rank"]["top1"]) ?>' data-color="4" data-title="Top 1"  style='height:100px;'></div>
-                      </div>
-                  </div>
-              </div>
               <div class="col-md-12">
                   <div class="card strpied-tabled-with-hover kills-per-match">
                       <div class="card-header ">

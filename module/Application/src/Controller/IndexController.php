@@ -42,8 +42,6 @@ class IndexController extends AbstractController
             foreach (['solo', 'duo', 'squad'] as $category) {
                 $table = $category . 'Table';
                 $result[$category]['kills'] = [];
-                $result[$category]['rank']['kills'] = [];
-                $result[$category]['rank']['top1'] = [];
                 $result[$category]['dates'] = [];
                 $statistics  = $this->$table->fetchAll($options, 'id ASC');
                 $repartitionKills = ['0' => 0, '1-3' => 0, '4-6' => 0, '7-9' => 0, '10+' => 0];
@@ -94,13 +92,6 @@ class IndexController extends AbstractController
                     $repartition[] = ['name' => $name, 'y' => $value];
                 }
                 $result[$category]['repartition']['top1'] = $repartition;
-
-                $rankTable = 'rank' . ucfirst($category) . 'Table';
-                $rankStats  = $this->$rankTable->fetchAll($options, 'id ASC');
-                foreach ($rankStats as $stats) {
-                    $result[$category]['rank']['kills'][] = (int) $stats->rankKills;
-                    $result[$category]['rank']['top1'][] = (int) $stats->rankTop1;
-                }
             }
 
         } else {
@@ -148,15 +139,6 @@ class IndexController extends AbstractController
                     'squadTop1'      => $squad['top1']['value'],
                     'top3'           => $squad['top3']['value'],
                     'top6'           => $squad['top6']['value'],
-                    'rankSoloScore'  => $solo['score']['rank'],
-                    'rankSoloKills'  => $solo['kills']['rank'],
-                    'rankDuoScore'   => $duo['score']['rank'],
-                    'rankDuoKills'   => $duo['kills']['rank'],
-                    'rankSquadScore' => $squad['score']['rank'],
-                    'rankSquadKills' => $squad['kills']['rank'],
-                    'rankSoloTop1'   => $solo['top1']['rank'],
-                    'rankDuoTop1'    => $duo['top1']['rank'],
-                    'rankSquadTop1'  => $squad['top1']['rank'],
                     'updatedAt'      => date('Y-m-d H:i:s', time()),
                 ];
                 $lifeStats = $this->lifetimeTable->save($data);
