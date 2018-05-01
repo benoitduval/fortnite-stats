@@ -86,9 +86,9 @@ class ConsoleController extends AbstractController
                             'updatedAt' => date('Y-m-d H:i:s', time())
                         ];
 
-                        $this->soloTable->save($diff);
+                        $this->soloTable->save($solo);
                     } else if ($values['playlist'] == 'p10') {
-                        $solo = [
+                        $duo = [
                             'userId'    => $user->id,
                             'top1'      => $values['top1'],
                             'top5'      => $values['top5'],
@@ -99,9 +99,9 @@ class ConsoleController extends AbstractController
                             'updatedAt' => date('Y-m-d H:i:s', time())
                         ];
 
-                        $this->duoTable->save($diff);
+                        $this->duoTable->save($duo);
                     } else if ($values['playlist'] == 'p9') {
-                        $solo = [
+                        $squad = [
                             'userId'    => $user->id,
                             'top1'      => $values['top1'],
                             'top3'      => $values['top3'],
@@ -112,7 +112,7 @@ class ConsoleController extends AbstractController
                             'updatedAt' => date('Y-m-d H:i:s', time())
                         ];
 
-                        $this->squadTable->save($diff);
+                        $this->squadTable->save($squad);
                     }
                 }
                 $data += ['id' => $lifeStats->id];
