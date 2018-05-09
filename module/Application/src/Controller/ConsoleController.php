@@ -95,6 +95,7 @@ class ConsoleController extends AbstractController
                             'updatedAt' => $matchDate->format('Y-m-d H:i:s')
                         ];
                         $soloUpdate = $matchDate;
+                        $console->writeLine('Updating SOLO stats', Color::YELLOW);
                         $this->soloTable->save($solo);
                     } else if ($values['playlist'] == 'p10') {
                         if (!isset($duoUpdate)) {
@@ -115,6 +116,7 @@ class ConsoleController extends AbstractController
                             'updatedAt' => $matchDate->format('Y-m-d H:i:s')
                         ];
                         $duoUpdate = $matchDate;
+                        $console->writeLine('Updating DUO stats', Color::YELLOW);
                         $this->duoTable->save($duo);
                     } else if ($values['playlist'] == 'p9') {
                         if (!isset($squadUpdate)) {
@@ -136,6 +138,7 @@ class ConsoleController extends AbstractController
                         ];
 
                         $squadUpdate = $matchDate;
+                        $console->writeLine('Updating SQUAD stats', Color::YELLOW);
                         $this->squadTable->save($squad);
                     }
                 }
