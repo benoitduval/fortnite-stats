@@ -82,6 +82,8 @@ class ConsoleController extends AbstractController
                             $soloUpdate = \DateTime::createFromFormat('Y-m-d H:i:s', $lastMatch->updatedAt);
                         }
                         if ($matchDate < $soloUpdate) continue;
+                        if ($values['top1']) $values['top10'] = $values['top25'] = 0;
+                        if ($values['top10']) $values['top25'] = 0;
                         $solo = [
                             'userId'    => $user->id,
                             'top1'      => $values['top1'],
@@ -100,6 +102,8 @@ class ConsoleController extends AbstractController
                             $duoUpdate = \DateTime::createFromFormat('Y-m-d H:i:s', $lastMatch->updatedAt);
                         }
                         if ($matchDate < $duoUpdate) continue;
+                        if ($values['top1']) $values['top5'] = $values['top12'] = 0;
+                        if ($values['top5']) $values['top12'] = 0;
                         $duo = [
                             'userId'    => $user->id,
                             'top1'      => $values['top1'],
@@ -118,6 +122,8 @@ class ConsoleController extends AbstractController
                             $squadUpdate = \DateTime::createFromFormat('Y-m-d H:i:s', $lastMatch->updatedAt);
                         }
                         if ($matchDate < $squadUpdate) continue;
+                        if ($values['top1']) $values['top3'] = $values['top6'] = 0;
+                        if ($values['top3']) $values['top6'] = 0;
                         $squad = [
                             'userId'    => $user->id,
                             'top1'      => $values['top1'],
