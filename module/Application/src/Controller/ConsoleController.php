@@ -69,12 +69,19 @@ class ConsoleController extends AbstractController
                 $console->writeLine('New User, creating lifeStats.', Color::MAGENTA);
                 $this->lifetimeTable->save($data);
             } else {
-                $updatedAt = \DateTime::createFromFormat('Y-m-d H:i:s', $lifetime->updatedAt);
-                foreach ($result['recentMatches'] as $values) {
-                    $matchDate = \DateTime::createFromFormat('Y-m-d\TH:i:s.u', $values['dateCollected']);
-                    if ($updatedAt > $matchDate) continue;
+                $matches = array_reverse($result['recentMatches']);
+                foreach ($matches as $values) {
+                    if ($values['matches'] > 1) continue;
+                    if (!($matchDate = \DateTime::createFromFormat('Y-m-d\TH:i:s.u', $values['dateCollected']))) {
+                        $matchDate = \DateTime::createFromFormat('Y-m-d\TH:i:s', $values['dateCollected']);
+                    }
 
                     if ($values['playlist'] == 'p2') {
+                        if (!isset($soloUpdate)) {
+                            $lastMatch = $this->soloTable->fetchOne(['userId' => $user->id], 'id DESC');
+                            $soloUpdate = \DateTime::createFromFormat('Y-m-d H:i:s', $lastMatch->updatedAt);
+                        }
+                        if ($matchDate < $soloUpdate) continue;
                         $solo = [
                             'userId'    => $user->id,
                             'top1'      => $values['top1'],
@@ -83,11 +90,16 @@ class ConsoleController extends AbstractController
                             'matches'   => $values['matches'],
                             'kills'     => $values['kills'],
                             'score'     => $values['score'],
-                            'updatedAt' => date('Y-m-d H:i:s', time())
+                            'updatedAt' => $matchDate->format('Y-m-d H:i:s')
                         ];
-
+                        $soloUpdate = $matchDate;
                         $this->soloTable->save($solo);
                     } else if ($values['playlist'] == 'p10') {
+                        if (!isset($duoUpdate)) {
+                            $lastMatch = $this->duoTable->fetchOne(['userId' => $user->id], 'id DESC');
+                            $duoUpdate = \DateTime::createFromFormat('Y-m-d H:i:s', $lastMatch->updatedAt);
+                        }
+                        if ($matchDate < $duoUpdate) continue;
                         $duo = [
                             'userId'    => $user->id,
                             'top1'      => $values['top1'],
@@ -96,11 +108,16 @@ class ConsoleController extends AbstractController
                             'matches'   => $values['matches'],
                             'kills'     => $values['kills'],
                             'score'     => $values['score'],
-                            'updatedAt' => date('Y-m-d H:i:s', time())
+                            'updatedAt' => $matchDate->format('Y-m-d H:i:s')
                         ];
-
+                        $duoUpdate = $matchDate;
                         $this->duoTable->save($duo);
                     } else if ($values['playlist'] == 'p9') {
+                        if (!isset($squadUpdate)) {
+                            $lastMatch = $this->duoTable->fetchOne(['userId' => $user->id], 'id DESC');
+                            $squadUpdate = \DateTime::createFromFormat('Y-m-d H:i:s', $lastMatch->updatedAt);
+                        }
+                        if ($matchDate < $squadUpdate) continue;
                         $squad = [
                             'userId'    => $user->id,
                             'top1'      => $values['top1'],
@@ -109,9 +126,10 @@ class ConsoleController extends AbstractController
                             'matches'   => $values['matches'],
                             'kills'     => $values['kills'],
                             'score'     => $values['score'],
-                            'updatedAt' => date('Y-m-d H:i:s', time())
+                            'updatedAt' => $matchDate->format('Y-m-d H:i:s')
                         ];
 
+                        $squadUpdate = $matchDate;
                         $this->squadTable->save($squad);
                     }
                 }
