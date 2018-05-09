@@ -70,6 +70,7 @@ class ConsoleController extends AbstractController
                 $this->lifetimeTable->save($data);
             } else {
                 $matches = array_reverse($result['recentMatches']);
+                $soloUpdate = $duoUpdate = $squadUpdate = null;
                 foreach ($matches as $values) {
                     if ($values['matches'] > 1) continue;
                     if (!($matchDate = \DateTime::createFromFormat('Y-m-d\TH:i:s.u', $values['dateCollected']))) {
@@ -77,11 +78,12 @@ class ConsoleController extends AbstractController
                     }
 
                     if ($values['playlist'] == 'p2') {
-                        if (!isset($soloUpdate)) {
-                            $lastMatch = $this->soloTable->fetchOne(['userId' => $user->id], 'id DESC');
-                            $soloUpdate = \DateTime::createFromFormat('Y-m-d H:i:s', $lastMatch->updatedAt);
+                        if (!$soloUpdate) {
+                            if ($lastMatch = $this->soloTable->fetchOne(['userId' => $user->id], 'id DESC')) {
+                                $soloUpdate = \DateTime::createFromFormat('Y-m-d H:i:s', $lastMatch->updatedAt);
+                            }
                         }
-                        if ($matchDate < $soloUpdate) continue;
+                        if ($soloUpdate && $matchDate->getTimestamp() <= $soloUpdate->getTimestamp()) continue;
                         if ($values['top1']) $values['top10'] = $values['top25'] = 0;
                         if ($values['top10']) $values['top25'] = 0;
                         $solo = [
@@ -98,11 +100,12 @@ class ConsoleController extends AbstractController
                         $console->writeLine('Updating SOLO stats', Color::YELLOW);
                         $this->soloTable->save($solo);
                     } else if ($values['playlist'] == 'p10') {
-                        if (!isset($duoUpdate)) {
-                            $lastMatch = $this->duoTable->fetchOne(['userId' => $user->id], 'id DESC');
-                            $duoUpdate = \DateTime::createFromFormat('Y-m-d H:i:s', $lastMatch->updatedAt);
+                        if (!$duoUpdate) {
+                            if ($lastMatch = $this->duoTable->fetchOne(['userId' => $user->id], 'id DESC')) {
+                                $duoUpdate = \DateTime::createFromFormat('Y-m-d H:i:s', $lastMatch->updatedAt);
+                            }
                         }
-                        if ($matchDate < $duoUpdate) continue;
+                        if ($duoUpdate && $matchDate->getTimestamp() <= $duoUpdate->getTimestamp()) continue;
                         if ($values['top1']) $values['top5'] = $values['top12'] = 0;
                         if ($values['top5']) $values['top12'] = 0;
                         $duo = [
@@ -119,11 +122,13 @@ class ConsoleController extends AbstractController
                         $console->writeLine('Updating DUO stats', Color::YELLOW);
                         $this->duoTable->save($duo);
                     } else if ($values['playlist'] == 'p9') {
-                        if (!isset($squadUpdate)) {
-                            $lastMatch = $this->duoTable->fetchOne(['userId' => $user->id], 'id DESC');
-                            $squadUpdate = \DateTime::createFromFormat('Y-m-d H:i:s', $lastMatch->updatedAt);
+                        if (!$squadUpdate) {
+                            if ($lastMatch = $this->squadTable->fetchOne(['userId' => $user->id], 'id DESC')) {
+                                $squadUpdate = \DateTime::createFromFormat('Y-m-d H:i:s', $lastMatch->updatedAt);
+                            }
                         }
-                        if ($matchDate < $squadUpdate) continue;
+                        if ($squadUpdate && $matchDate->getTimestamp() <= $squadUpdate->getTimestamp()) continue;
+
                         if ($values['top1']) $values['top3'] = $values['top6'] = 0;
                         if ($values['top3']) $values['top6'] = 0;
                         $squad = [
