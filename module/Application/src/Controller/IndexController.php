@@ -31,6 +31,11 @@ class IndexController extends AbstractController
         $from    = $this->params()->fromQuery('from', null);
         $to      = $this->params()->fromQuery('to', null);
 
+        $lastWeekFrom = new \Datetime('monday last week midnight');
+        $lastWeekTo   = new \Datetime('sunday last week 23:59:59');
+        $thisWeekFrom = new \Datetime('monday this week midnight');
+        $thisWeekTo   = new \Datetime('sunday this week 23:59:59');
+
         $nickname = $this->params()->fromQuery('user', null);
         if ($user = $this->userTable->fetchOne(['nickname' => $nickname])) {
             $lifeStats  = $this->lifetimeTable->fetchOne(['userId' => $user->id]);
@@ -40,13 +45,67 @@ class IndexController extends AbstractController
             if ($to) $options['updatedAt <= ?']   = $to . ' 23:59:59';
 
             foreach (['solo', 'duo', 'squad'] as $category) {
+                $countMatchLastWeek = 0;
+                $countMatchThisWeek = 0;
                 $table = $category . 'Table';
+
                 $result[$category]['kills'] = [];
                 $result[$category]['dates'] = [];
+                $result[$category]['compare'] = [
+                    'thisWeek' => [
+                        'games' => 0,
+                        'kills' => 0,
+                        '#1'    => 0,
+                        '#3'    => 0,
+                        '#5'    => 0,
+                        '#6'    => 0,
+                        '#10'   => 0,
+                        '#12'   => 0,
+                        '#25'   => 0,
+                    ],
+                    'lastWeek' => [
+                        'games' => 0,
+                        'kills' => 0,
+                        '#1'    => 0,
+                        '#3'    => 0,
+                        '#5'    => 0,
+                        '#6'    => 0,
+                        '#10'   => 0,
+                        '#12'   => 0,
+                        '#25'   => 0,
+                    ],
+                ];
                 $statistics  = $this->$table->fetchAll($options, 'id ASC');
                 $repartitionKills = ['0' => 0, '1-3' => 0, '4-6' => 0, '7-9' => 0, '10+' => 0];
                 $repartitionTop1  = ['0' => 0, '1-3' => 0, '4-6' => 0, '7-9' => 0, '10+' => 0];
                 foreach ($statistics as $stats) {
+                    $matchDate = new \Datetime($stats->updatedAt);
+                    if ($lastWeekFrom <= $matchDate && $matchDate <= $lastWeekTo) {
+                        $result[$category]['compare']['lastWeek']['games'] ++;
+                        $result[$category]['compare']['lastWeek']['kills'] += $stats->kills;
+                        if ($category == 'solo' && $stats->win)   $result[$category]['compare']['lastWeek']['#1'] ++;
+                        if ($category == 'solo' && $stats->top10) $result[$category]['compare']['lastWeek']['#10'] ++;
+                        if ($category == 'solo' && $stats->top25) $result[$category]['compare']['lastWeek']['#25'] ++;
+                        if ($category == 'duo' && $stats->top1)   $result[$category]['compare']['lastWeek']['#1'] ++;
+                        if ($category == 'duo' && $stats->top5)   $result[$category]['compare']['lastWeek']['#5'] ++;
+                        if ($category == 'duo' && $stats->top12)  $result[$category]['compare']['lastWeek']['#12'] ++;
+                        if ($category == 'squad' && $stats->top1) $result[$category]['compare']['lastWeek']['#1'] ++;
+                        if ($category == 'squad' && $stats->top3) $result[$category]['compare']['lastWeek']['#3'] ++;
+                        if ($category == 'squad' && $stats->top6) $result[$category]['compare']['lastWeek']['#6'] ++;
+                    } else if ($thisWeekFrom <= $matchDate && $matchDate <= $thisWeekTo) {
+                        $result[$category]['compare']['thisWeek']['games'] ++;
+                        $result[$category]['compare']['thisWeek']['kills'] += $stats->kills;
+                        if ($category == 'solo'  && $stats->win)   $result[$category]['compare']['thisWeek']['#1'] ++;
+                        if ($category == 'solo'  && $stats->top10) $result[$category]['compare']['thisWeek']['#10'] ++;
+                        if ($category == 'solo'  && $stats->top25) $result[$category]['compare']['thisWeek']['#25'] ++;
+                        if ($category == 'duo'   && $stats->top1)  $result[$category]['compare']['thisWeek']['#1'] ++;
+                        if ($category == 'duo'   && $stats->top5)  $result[$category]['compare']['thisWeek']['#5'] ++;
+                        if ($category == 'duo'   && $stats->top12) $result[$category]['compare']['thisWeek']['#12'] ++;
+                        if ($category == 'squad' && $stats->top1)  $result[$category]['compare']['thisWeek']['#1'] ++;
+                        if ($category == 'squad' && $stats->top3)  $result[$category]['compare']['thisWeek']['#3'] ++;
+                        if ($category == 'squad' && $stats->top6)  $result[$category]['compare']['thisWeek']['#6'] ++;
+                    }
+
                     if ($stats->top1) {
                         $result[$category]['kills'][] = [
                             'y' => (int) $stats->kills,

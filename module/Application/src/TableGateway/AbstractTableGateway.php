@@ -17,7 +17,6 @@ class AbstractTableGateway
     {
         $this->_tableGateway = $tableGateway;
         $this->_container = $container;
-        static::$_cache = $this->_container->get('memcached');
     }
 
     public function getContainer()
@@ -47,10 +46,7 @@ class AbstractTableGateway
 
     public function find($id)
     {
-        $key = $this->getTableGateway()->getTable() . '.' . $id;
-        if ($row = static::_get($key)) return $row;
         $rowset = $this->getTableGateway()->select(['id' => $id]);
-        static::_set($key, $rowset->current());
         return $rowset->current();
     }
 
@@ -87,7 +83,6 @@ class AbstractTableGateway
             ));
         }
 
-        static::_remove($this->getTableGateway()->getTable() . '.' . $id);
         $this->getTableGateway()->update($data, ['id' => $id]);
         return $this->find($id);
     }
@@ -101,24 +96,5 @@ class AbstractTableGateway
             $id = $params->id;
             $this->getTableGateway()->delete(['id' => (int) $params->id]);
         }
-        if (isset($id)) static::_remove($this->getTableGateway()->getTable() . '.' . $id);
-    }
-
-    protected static function _get($key)
-    {
-        if (!($cache = static::$_cache)) return false;
-        return $cache->getItem($key);
-    }
-
-    protected static function _set($key, $item)
-    {
-        if (!($cache = static::$_cache)) return false;
-        return $cache->setItem($key, $item);
-    }
-
-    protected function _remove($key)
-    {
-        if (!($cache = static::$_cache)) return false;
-        return $cache->removeItem($key);
     }
 }

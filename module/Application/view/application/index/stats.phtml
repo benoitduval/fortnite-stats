@@ -39,7 +39,7 @@
               <div class="col-md-4">
                   <div class="card strpied-tabled-with-hover">
                       <div class="card-header ">
-                          <h4 class="card-title"><?= ucfirst($category) ?> Statistics</h4>
+                          <h4 class="card-title">Lifetime <?= ucfirst($category) ?> Statistics</h4>
                           <p class="card-category">
                               <i class="fa fa-history"></i>
                               <?= $lifeStats->updatedAt ?>
@@ -63,6 +63,161 @@
                                   <tr>
                                       <td>Score</td>
                                       <td class="text-right"><i><?= $lifeStats->{$category . 'Score'} ?></i></td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-8">
+                  <div class="card strpied-tabled-with-hover">
+                      <div class="card-header ">
+                          <h4 class="card-title">Comparison <?= ucfirst($category) ?> Statistics</h4>
+                          <p class="card-category">
+                              <i class="fa fa-history"></i>
+                              <?= $lifeStats->updatedAt ?>
+                          </p>
+                      </div>
+                      <div class="card-body table-full-width table-responsive">
+                          <table class="table table-hover">
+                              <thead>
+                                <tr>
+                                    <td></td>
+                                    <td class="text-center">Games</td>
+                                    <td class="text-center">Kills</td>
+                                    <td class="text-center">Wins</td>
+                                    <?php if ($category == 'solo'): ?>
+                                      <td class="text-center">Top10</td>
+                                      <td class="text-center">Top25</td>
+                                    <?php elseif ($category == 'duo'): ?>
+                                      <td class="text-center">Top5</td>
+                                      <td class="text-center">Top12</td>
+                                    <?php else: ?>
+                                      <td class="text-center">Top3</td>
+                                      <td class="text-center">Top6</td>
+                                    <?php endif ?>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                      <td>Current Week</td>
+                                      <td class="text-center"><i><?= $result[$category]['compare']['thisWeek']['games'] ?></i></td>
+                                      <td class="text-center"><i><?= $result[$category]['compare']['thisWeek']['kills'] ?></i></td>
+                                      <td class="text-center"><i><?= $result[$category]['compare']['thisWeek']['#1'] ?></i></td>
+                                      <?php if ($category == 'solo'): ?>
+                                        <td class="text-center"><i><?= $result[$category]['compare']['thisWeek']['#10'] ?></i></td>
+                                        <td class="text-center"><i><?= $result[$category]['compare']['thisWeek']['#25'] ?></i></td>
+                                      <?php elseif ($category == 'duo'): ?>
+                                        <td class="text-center"><i><?= $result[$category]['compare']['thisWeek']['#5'] ?></i></td>
+                                        <td class="text-center"><i><?= $result[$category]['compare']['thisWeek']['#12'] ?></i></td>
+                                      <?php else: ?>
+                                        <td class="text-center"><i><?= $result[$category]['compare']['thisWeek']['#3'] ?></i></td>
+                                        <td class="text-center"><i><?= $result[$category]['compare']['thisWeek']['#6'] ?></i></td>
+                                      <?php endif ?>
+                                  </tr>
+                                  <tr>
+                                      <td>Last Week</td>
+                                      <td class="text-center"><i><?= $result[$category]['compare']['lastWeek']['games'] ?></i></td>
+                                      <td class="text-center"><i><?= $result[$category]['compare']['lastWeek']['kills'] ?></i></td>
+                                      <td class="text-center"><i><?= $result[$category]['compare']['lastWeek']['#1'] ?></i></td>
+                                      <?php if ($category == 'solo'): ?>
+                                        <td class="text-center"><i><?= $result[$category]['compare']['lastWeek']['#10'] ?></i></td>
+                                        <td class="text-center"><i><?= $result[$category]['compare']['lastWeek']['#25'] ?></i></td>
+                                      <?php elseif ($category == 'duo'): ?>
+                                        <td class="text-center"><i><?= $result[$category]['compare']['lastWeek']['#5'] ?></i></td>
+                                        <td class="text-center"><i><?= $result[$category]['compare']['lastWeek']['#12'] ?></i></td>
+                                      <?php else: ?>
+                                        <td class="text-center"><i><?= $result[$category]['compare']['lastWeek']['#3'] ?></i></td>
+                                        <td class="text-center"><i><?= $result[$category]['compare']['lastWeek']['#6'] ?></i></td>
+                                      <?php endif ?>
+                                  </tr>
+                                  <tr>
+                                      <td></td>
+                                      <td class="text-center"><i>
+                                        <?php if (($result[$category]['compare']['thisWeek']['games'] - $result[$category]['compare']['lastWeek']['games']) > 0): ?>
+                                          <span class="text-success"><i class="fa fa-arrow-up"></i> +
+                                        <?php elseif (($result[$category]['compare']['thisWeek']['games'] - $result[$category]['compare']['lastWeek']['games']) < 0): ?>
+                                          <span class="text-danger"><i class="fa fa-arrow-down"></i>
+                                        <?php endif ?>
+                                        <?= $result[$category]['compare']['thisWeek']['games'] - $result[$category]['compare']['lastWeek']['games'] ?>
+                                        </span></i>
+                                      </td>
+                                      <td class="text-center"><i>
+                                        <?php if (($result[$category]['compare']['thisWeek']['kills'] - $result[$category]['compare']['lastWeek']['kills']) > 0): ?>
+                                          <span class="text-success"><i class="fa fa-arrow-up"></i> +
+                                        <?php elseif (($result[$category]['compare']['thisWeek']['kills'] - $result[$category]['compare']['lastWeek']['kills']) < 0): ?>
+                                          <span class="text-danger"><i class="fa fa-arrow-down"></i>
+                                        <?php endif ?>
+                                        <?= $result[$category]['compare']['thisWeek']['kills'] - $result[$category]['compare']['lastWeek']['kills'] ?>
+                                        </span></i>
+                                      </td>
+                                      <td class="text-center"><i>
+                                        <?php if (($result[$category]['compare']['thisWeek']['#1'] - $result[$category]['compare']['lastWeek']['#1']) > 0): ?>
+                                          <span class="text-success"><i class="fa fa-arrow-up"></i> +
+                                        <?php elseif (($result[$category]['compare']['thisWeek']['#1'] - $result[$category]['compare']['lastWeek']['#1']) < 0): ?>
+                                          <span class="text-danger"><i class="fa fa-arrow-down"></i>
+                                        <?php endif ?>
+                                        <?= $result[$category]['compare']['thisWeek']['#1'] - $result[$category]['compare']['lastWeek']['#1'] ?>
+                                        </span></i>
+                                      </td>
+                                      <?php if ($category == 'solo'): ?>
+                                        <td class="text-center"><i>
+                                          <?php if (($result[$category]['compare']['thisWeek']['#10'] - $result[$category]['compare']['lastWeek']['#10']) > 0): ?>
+                                            <span class="text-success"><i class="fa fa-arrow-up"></i> +
+                                          <?php elseif (($result[$category]['compare']['thisWeek']['#10'] - $result[$category]['compare']['lastWeek']['#10']) < 0): ?>
+                                            <span class="text-danger"><i class="fa fa-arrow-down"></i>
+                                          <?php endif ?>
+                                          <?= $result[$category]['compare']['thisWeek']['#10'] - $result[$category]['compare']['lastWeek']['#10'] ?>
+                                          </span></i>
+                                        </td>
+                                        <td class="text-center"><i>
+                                          <?php if (($result[$category]['compare']['thisWeek']['#25'] - $result[$category]['compare']['lastWeek']['#25']) > 0): ?>
+                                            <span class="text-success"><i class="fa fa-arrow-up"></i> +
+                                          <?php elseif (($result[$category]['compare']['thisWeek']['#25'] - $result[$category]['compare']['lastWeek']['#25']) < 0): ?>
+                                            <span class="text-danger"><i class="fa fa-arrow-down"></i>
+                                          <?php endif ?>
+                                          <?= $result[$category]['compare']['thisWeek']['#25'] - $result[$category]['compare']['lastWeek']['#25'] ?>
+                                          </span></i>
+                                        </td>
+                                      <?php elseif ($category == 'duo'): ?>
+                                        <td class="text-center"><i>
+                                          <?php if (($result[$category]['compare']['thisWeek']['#5'] - $result[$category]['compare']['lastWeek']['#5']) > 0): ?>
+                                            <span class="text-success"><i class="fa fa-arrow-up"></i> +
+                                          <?php elseif (($result[$category]['compare']['thisWeek']['#5'] - $result[$category]['compare']['lastWeek']['#5']) < 0): ?>
+                                            <span class="text-danger"><i class="fa fa-arrow-down"></i>
+                                          <?php endif ?>
+                                          <?= $result[$category]['compare']['thisWeek']['#5'] - $result[$category]['compare']['lastWeek']['#5'] ?>
+                                          </span></i>
+                                        </td>
+                                        <td class="text-center"><i>
+                                          <?php if (($result[$category]['compare']['thisWeek']['#12'] - $result[$category]['compare']['lastWeek']['#12']) > 0): ?>
+                                            <span class="text-success"><i class="fa fa-arrow-up"></i> +
+                                          <?php elseif (($result[$category]['compare']['thisWeek']['#12'] - $result[$category]['compare']['lastWeek']['#12']) < 0): ?>
+                                            <span class="text-danger"><i class="fa fa-arrow-down"></i>
+                                          <?php endif ?>
+                                          <?= $result[$category]['compare']['thisWeek']['#12'] - $result[$category]['compare']['lastWeek']['#12'] ?>
+                                          </span></i>
+                                        </td>
+                                      <?php else: ?>
+                                        <td class="text-center"><i>
+                                          <?php if (($result[$category]['compare']['thisWeek']['#3'] - $result[$category]['compare']['lastWeek']['#3']) > 0): ?>
+                                            <span class="text-success"><i class="fa fa-arrow-up"></i> +
+                                          <?php elseif (($result[$category]['compare']['thisWeek']['#3'] - $result[$category]['compare']['lastWeek']['#3']) < 0): ?>
+                                            <span class="text-danger"><i class="fa fa-arrow-down"></i>
+                                          <?php endif ?>
+                                          <?= $result[$category]['compare']['thisWeek']['#3'] - $result[$category]['compare']['lastWeek']['#3'] ?>
+                                          </span></i>
+                                        </td>
+                                        <td class="text-center"><i>
+                                          <?php if (($result[$category]['compare']['thisWeek']['#6'] - $result[$category]['compare']['lastWeek']['#6']) > 0): ?>
+                                            <span class="text-success"><i class="fa fa-arrow-up"></i> +
+                                          <?php elseif (($result[$category]['compare']['thisWeek']['#6'] - $result[$category]['compare']['lastWeek']['#12']) < 0): ?>
+                                            <span class="text-danger"><i class="fa fa-arrow-down"></i>
+                                          <?php endif ?>
+                                          <?= $result[$category]['compare']['thisWeek']['#6'] - $result[$category]['compare']['lastWeek']['#6'] ?>
+                                          </span></i>
+                                        </td>
+                                      <?php endif ?>
                                   </tr>
                               </tbody>
                           </table>
