@@ -83,7 +83,7 @@ class IndexController extends AbstractController
                     if ($lastWeekFrom <= $matchDate && $matchDate <= $lastWeekTo) {
                         $result[$category]['compare']['lastWeek']['games'] ++;
                         $result[$category]['compare']['lastWeek']['kills'] += $stats->kills;
-                        if ($category == 'solo' && $stats->win)   $result[$category]['compare']['lastWeek']['#1'] ++;
+                        if ($category == 'solo' && $stats->top1)   $result[$category]['compare']['lastWeek']['#1'] ++;
                         if ($category == 'solo' && $stats->top10) $result[$category]['compare']['lastWeek']['#10'] ++;
                         if ($category == 'solo' && $stats->top25) $result[$category]['compare']['lastWeek']['#25'] ++;
                         if ($category == 'duo' && $stats->top1)   $result[$category]['compare']['lastWeek']['#1'] ++;
@@ -95,7 +95,7 @@ class IndexController extends AbstractController
                     } else if ($thisWeekFrom <= $matchDate && $matchDate <= $thisWeekTo) {
                         $result[$category]['compare']['thisWeek']['games'] ++;
                         $result[$category]['compare']['thisWeek']['kills'] += $stats->kills;
-                        if ($category == 'solo'  && $stats->win)   $result[$category]['compare']['thisWeek']['#1'] ++;
+                        if ($category == 'solo'  && $stats->top1)   $result[$category]['compare']['thisWeek']['#1'] ++;
                         if ($category == 'solo'  && $stats->top10) $result[$category]['compare']['thisWeek']['#10'] ++;
                         if ($category == 'solo'  && $stats->top25) $result[$category]['compare']['thisWeek']['#25'] ++;
                         if ($category == 'duo'   && $stats->top1)  $result[$category]['compare']['thisWeek']['#1'] ++;
