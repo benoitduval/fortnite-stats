@@ -53,6 +53,7 @@ class IndexController extends AbstractController
                 $result[$category]['dates'] = [];
                 $result[$category]['compare'] = [
                     'thisWeek' => [
+                        'KD'    => 0,
                         'games' => 0,
                         'kills' => 0,
                         '#1'    => 0,
@@ -64,6 +65,7 @@ class IndexController extends AbstractController
                         '#25'   => 0,
                     ],
                     'lastWeek' => [
+                        'KD'    => 0,
                         'games' => 0,
                         'kills' => 0,
                         '#1'    => 0,
@@ -141,6 +143,7 @@ class IndexController extends AbstractController
                     }
                     $result[$category]['dates'][] = $stats->updatedAt;
                 }
+
                 $repartition = [];
                 foreach ($repartitionKills as $name => $value) {
                     $repartition[] = ['name' => $name, 'y' => $value];
@@ -151,6 +154,11 @@ class IndexController extends AbstractController
                     $repartition[] = ['name' => $name, 'y' => $value];
                 }
                 $result[$category]['repartition']['top1'] = $repartition;
+            }
+
+            foreach (['solo', 'duo', 'squad'] as $category) {
+                if (!$result[$category]['compare']['thisWeek']['kills'] || !$result[$category]['compare']['thisWeek']['games']) continue;
+                $result[$category]['compare']['thisWeek']['KD'] = round($result[$category]['compare']['thisWeek']['kills'] / ($result[$category]['compare']['thisWeek']['games'] - $result[$category]['compare']['thisWeek']['#1']), 2);
             }
 
         } else {
