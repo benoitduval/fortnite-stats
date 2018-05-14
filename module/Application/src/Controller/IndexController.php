@@ -157,8 +157,12 @@ class IndexController extends AbstractController
             }
 
             foreach (['solo', 'duo', 'squad'] as $category) {
-                if (!$result[$category]['compare']['thisWeek']['kills'] || !$result[$category]['compare']['thisWeek']['games']) continue;
-                $result[$category]['compare']['thisWeek']['KD'] = round($result[$category]['compare']['thisWeek']['kills'] / ($result[$category]['compare']['thisWeek']['games'] - $result[$category]['compare']['thisWeek']['#1']), 2);
+                if ($result[$category]['compare']['thisWeek']['kills'] && $result[$category]['compare']['thisWeek']['games']) {
+                    $result[$category]['compare']['thisWeek']['KD'] = round($result[$category]['compare']['thisWeek']['kills'] / ($result[$category]['compare']['thisWeek']['games'] - $result[$category]['compare']['thisWeek']['#1']), 2);
+                }
+                if ($result[$category]['compare']['lastWeek']['kills'] && $result[$category]['compare']['lastWeek']['games']) {
+                    $result[$category]['compare']['lastWeek']['KD'] = round($result[$category]['compare']['lastWeek']['kills'] / ($result[$category]['compare']['lastWeek']['games'] - $result[$category]['compare']['lastWeek']['#1']), 2);
+                }
             }
 
         } else {
